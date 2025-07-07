@@ -56,15 +56,17 @@ export async function POST(request: NextRequest) {
     const emailHtml = await render(
       WelcomeEmailTemplate({
         email,
-        siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://vizagwriters.in'
+        siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://sendincraft.com',
       })
     )
     
+    const emailSubject = 'Welcome to SendinCraft - Your transactional email journey starts now! 🚀'
+    
     // Send confirmation email
     const { data, error: resendError } = await resend.emails.send({
-      from: 'Vizag Writers <notify@vizagwriters.in>', // Replace with your verified domain
+      from: 'SendinCraft Inc <notify@sendincraft.com>', // Replace with your verified domain
       to: [email],
-      subject: 'Welcome to Vizag Writers - You\'re on the list! 🎉',
+      subject: emailSubject,
       html: emailHtml,
     })
 
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest) {
       await prisma.emailLog.create({
         data: {
           email,
-          subject: 'Welcome to Vizag Writers - You\'re on the list! 🎉',
+          subject: emailSubject,
           status: 'failed',
           error: resendError.message,
         }
@@ -103,7 +105,7 @@ export async function POST(request: NextRequest) {
     await prisma.emailLog.create({
       data: {
         email,
-        subject: 'Welcome to Vizag Writers - You\'re on the list! 🎉',
+        subject: emailSubject,
         status: 'sent',
         resendId: data?.id,
         subscriptionId: subscription.id,

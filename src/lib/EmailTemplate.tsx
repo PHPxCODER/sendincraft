@@ -38,7 +38,7 @@ export default function WelcomeEmailTemplate({
           fontStyle="normal"
         />
       </Head>
-      <Preview>Welcome to Vizag Writers - Your creative journey begins!</Preview>
+      <Preview>Welcome to SendinCraft - Your transactional email journey starts here!</Preview>
       
       <Body style={{ 
         backgroundColor: '#f8fafc',
@@ -64,7 +64,7 @@ export default function WelcomeEmailTemplate({
               margin: '0 0 8px 0',
               lineHeight: '1.2'
             }}>
-              Welcome to Vizag Writers!
+              Welcome to SendinCraft!
             </Heading>
             <Text style={{
               fontSize: '18px',
@@ -72,7 +72,7 @@ export default function WelcomeEmailTemplate({
               margin: '0',
               lineHeight: '1.5'
             }}>
-              Your creative journey begins soon...
+              Your transactional email journey starts here
             </Text>
           </Section>
 
@@ -121,8 +121,8 @@ export default function WelcomeEmailTemplate({
               margin: '0 0 32px 0',
               textAlign: 'center'
             }}>
-              Thank you for joining our community of passionate writers, poets, and storytellers! 
-              We&apos;re thrilled to have you on board.
+              Thank you for joining SendinCraft! We&apos;re excited to help you deliver reliable, 
+              scalable transactional emails powered by AWS SES.
             </Text>
 
             {/* Features Section */}
@@ -139,7 +139,7 @@ export default function WelcomeEmailTemplate({
                 margin: '0 0 16px 0',
                 lineHeight: '1.3'
               }}>
-                🚀 What&apos;s Coming Next?
+                🚀 What You Get with SendinCraft
               </Heading>
               
               <Section style={{ marginBottom: '12px' }}>
@@ -149,7 +149,7 @@ export default function WelcomeEmailTemplate({
                   color: '#475569',
                   margin: '0 0 8px 0'
                 }}>
-                  📝 A vibrant platform for writers and readers
+                  📧 Reliable transactional email delivery via AWS SES
                 </Text>
                 <Text style={{
                   fontSize: '15px',
@@ -157,7 +157,7 @@ export default function WelcomeEmailTemplate({
                   color: '#475569',
                   margin: '0 0 8px 0'
                 }}>
-                  🎓 Writing workshops and community events
+                  📊 Real-time analytics and delivery tracking
                 </Text>
                 <Text style={{
                   fontSize: '15px',
@@ -165,7 +165,15 @@ export default function WelcomeEmailTemplate({
                   color: '#475569',
                   margin: '0 0 8px 0'
                 }}>
-                  ✨ Opportunities to showcase your work
+                  🔧 Simple REST API and SDKs for easy integration
+                </Text>
+                <Text style={{
+                  fontSize: '15px',
+                  lineHeight: '1.6',
+                  color: '#475569',
+                  margin: '0 0 8px 0'
+                }}>
+                  🎨 Beautiful email templates and drag-drop editor
                 </Text>
                 <Text style={{
                   fontSize: '15px',
@@ -173,12 +181,12 @@ export default function WelcomeEmailTemplate({
                   color: '#475569',
                   margin: '0'
                 }}>
-                  🤝 Connect with fellow Vizag writers
+                  ⚡ High deliverability with AWS infrastructure
                 </Text>
               </Section>
             </Section>
 
-            {/* Launch Date Notice */}
+            {/* Getting Started Notice */}
             <Section style={{
               backgroundColor: '#fef3c7',
               border: '1px solid #fcd34d',
@@ -194,11 +202,11 @@ export default function WelcomeEmailTemplate({
                 lineHeight: '1.5',
                 textAlign: 'center'
               }}>
-                📅 <strong>Mark Your Calendar:</strong> We&apos;re launching on August 20, 2025 at 11:00 AM IST
+                🎯 <strong>Ready to Start?</strong> Check your dashboard for API keys and documentation
               </Text>
             </Section>
 
-            {/* Launch Message */}
+            {/* Next Steps Message */}
             <Text style={{
               fontSize: '16px',
               lineHeight: '1.6',
@@ -206,14 +214,14 @@ export default function WelcomeEmailTemplate({
               margin: '0 0 32px 0',
               textAlign: 'center'
             }}>
-              We&apos;ll send you an exclusive early access invitation as soon as we&apos;re ready to launch. 
-              Get ready to be part of something extraordinary!
+              Your account is ready to go! Log in to your dashboard to grab your API keys, 
+              explore our documentation, and send your first transactional email.
             </Text>
 
             {/* CTA Button */}
             <Section style={{ textAlign: 'center' }}>
               <Button
-                href={siteUrl}
+                href={`${siteUrl}/dashboard`}
                 style={{
                   backgroundColor: '#6366f1',
                   borderRadius: '8px',
@@ -227,7 +235,7 @@ export default function WelcomeEmailTemplate({
                   border: 'none'
                 }}
               >
-                Visit Our Website
+                Go to Dashboard
               </Button>
             </Section>
           </Section>
@@ -248,15 +256,15 @@ export default function WelcomeEmailTemplate({
               margin: '0 0 16px 0',
               lineHeight: '1.5'
             }}>
-              Follow us for updates:
+              Need help getting started?
             </Text>
 
-            {/* Social Links */}
+            {/* Help Links */}
             <Section style={{ marginBottom: '24px' }}>
               <Row>
                 <Column align="center">
                   <Link
-                    href="https://facebook.com/vizagwriters"
+                    href={`${siteUrl}/docs`}
                     style={{
                       color: '#6366f1',
                       fontSize: '14px',
@@ -265,12 +273,12 @@ export default function WelcomeEmailTemplate({
                       margin: '0 12px'
                     }}
                   >
-                    Facebook
+                    Documentation
                   </Link>
                 </Column>
                 <Column align="center">
                   <Link
-                    href="https://twitter.com/vizagwriters"
+                    href={`${siteUrl}/support`}
                     style={{
                       color: '#6366f1',
                       fontSize: '14px',
@@ -279,12 +287,12 @@ export default function WelcomeEmailTemplate({
                       margin: '0 12px'
                     }}
                   >
-                    Twitter
+                    Support
                   </Link>
                 </Column>
                 <Column align="center">
                   <Link
-                    href="https://instagram.com/vizagwriters"
+                    href={`${siteUrl}/examples`}
                     style={{
                       color: '#6366f1',
                       fontSize: '14px',
@@ -293,7 +301,7 @@ export default function WelcomeEmailTemplate({
                       margin: '0 12px'
                     }}
                   >
-                    Instagram
+                    Examples
                   </Link>
                 </Column>
               </Row>
@@ -310,7 +318,7 @@ export default function WelcomeEmailTemplate({
               margin: '0 0 8px 0',
               lineHeight: '1.4'
             }}>
-              Vizag Writers - Visakhapatnam, Andhra Pradesh, India
+              SendinCraft - Reliable Transactional Email Service
             </Text>
 
             <Text style={{
@@ -319,7 +327,7 @@ export default function WelcomeEmailTemplate({
               margin: '0',
               lineHeight: '1.4'
             }}>
-              If you didn&apos;t sign up for this, you can safely ignore this email.
+              If you didn&apos;t sign up for this account, please contact our support team.
             </Text>
           </Section>
         </Container>
