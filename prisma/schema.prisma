@@ -12,3 +12,39 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Subscription {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  subscribedAt  DateTime @default(now())
+  source        String   @default("coming-soon")
+  isVerified    Boolean  @default(false)
+  emailSentId   String?  // Resend email ID for tracking
+  ipAddress     String?
+  userAgent     String?
+  
+  // Relations
+  emailLogs     EmailLog[]
+  
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+model EmailLog {
+  id          String   @id @default(cuid())
+  email       String
+  subject     String
+  status      String   // 'sent', 'failed', 'delivered', 'bounced'
+  resendId    String?  // Resend email ID
+  error       String?
+  sentAt      DateTime @default(now())
+  
+  // Relations
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?
+
+  @@map("email_logs")
+}
