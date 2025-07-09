@@ -5,6 +5,7 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import Branding from "@/components/Branding";
 
 function Home() {
   const [email, setEmail] = useState("");
@@ -131,6 +132,7 @@ function Home() {
         )}
       </div>
       <BackgroundBeams />
+      <Branding/>
     </div>
   );
 }
