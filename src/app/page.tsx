@@ -16,9 +16,18 @@ function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email) {
+    // Custom validation - show error if email is empty
+    if (!email || email.trim() === "") {
       setStatus("error");
       setMessage("Please enter your email address");
+      return;
+    }
+
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
       return;
     }
 
@@ -89,7 +98,7 @@ function Home() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
               className="flex-1"
-              required
+              // Removed the required attribute
             />
             <Button 
               type="submit" 
@@ -107,10 +116,10 @@ function Home() {
             </Button>
           </div>
           
-          {/* Status Message */}
+          {/* Status Message with Red Text for Errors */}
           {message && (
             <div className={`flex items-center gap-2 mt-3 text-sm ${
-              status === "success" ? "text-green-600" : "text-red-600"
+              status === "success" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
             }`}>
               {getStatusIcon()}
               <span>{message}</span>
