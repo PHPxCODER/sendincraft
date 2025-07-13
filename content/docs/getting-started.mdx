@@ -1,0 +1,237 @@
+---
+title: Getting Started
+description: Get up and running with SendinCraft in under 5 minutes
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+# Getting Started
+
+Welcome to SendinCraft! This guide will help you send your first transactional email in under 5 minutes.
+
+## Prerequisites
+
+Before you begin, you'll need:
+- A SendinCraft account ([sign up here](https://sendincraft.com))
+- A verified email address
+- A domain you want to send emails from
+
+## Step 1: Create Your Account
+
+1. Visit [sendincraft.com](https://sendincraft.com) and click "Sign Up"
+2. Enter your email address and create a password
+3. Verify your email address by clicking the link we send you
+
+<Callout type="info">
+  You'll receive a welcome email with your account confirmation and next steps.
+</Callout>
+
+## Step 2: Verify Your Sending Domain
+
+To send emails from your domain, you need to verify ownership:
+
+### Add DNS Records
+
+Add these DNS records to your domain:
+
+```txt
+# SPF Record (TXT)
+Name: @
+Value: v=spf1 include:amazonses.com ~all
+
+# DKIM Records (CNAME)
+Name: _domainkey.yourdomain.com
+Value: _domainkey.amazonses.com
+
+# DMARC Record (TXT)
+Name: _dmarc
+Value: v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com
+```
+
+<Callout type="warning">
+  DNS propagation can take up to 48 hours. We'll notify you once verification is complete.
+</Callout>
+
+### Verify in Dashboard
+
+1. Go to your [SendinCraft Dashboard](https://app.sendincraft.com/domains)
+2. Click "Add Domain"
+3. Enter your domain name
+4. Follow the DNS setup instructions
+5. Click "Verify Domain"
+
+## Step 3: Get Your API Keys
+
+1. Navigate to [API Keys](https://app.sendincraft.com/api-keys) in your dashboard
+2. Click "Create New API Key"
+3. Give it a descriptive name (e.g., "Production API Key")
+4. Copy and securely store your API key
+
+<Callout type="danger">
+  **Keep your API keys secure!** Never commit them to version control or share them publicly.
+</Callout>
+
+## Step 4: Install the SDK
+
+Choose your preferred programming language:
+
+<Tabs>
+  <Tab value="nodejs" title="Node.js">
+    ```bash
+    npm install @sendincraft/node
+    ```
+  </Tab>
+  <Tab value="python" title="Python">
+    ```bash
+    pip install sendincraft
+    ```
+  </Tab>
+  <Tab value="php" title="PHP">
+    ```bash
+    composer require sendincraft/sendincraft-php
+    ```
+  </Tab>
+  <Tab value="ruby" title="Ruby">
+    ```bash
+    gem install sendincraft
+    ```
+  </Tab>
+</Tabs>
+
+## Step 5: Send Your First Email
+
+<Tabs>
+  <Tab value="nodejs" title="Node.js">
+    ```javascript
+    import { SendinCraft } from '@sendincraft/node';
+
+    const client = new SendinCraft(process.env.SENDINCRAFT_API_KEY);
+
+    async function sendWelcomeEmail() {
+      try {
+        const result = await client.emails.send({
+          from: 'welcome@yourdomain.com',
+          to: 'user@example.com',
+          subject: 'Welcome to our platform!',
+          html: `
+            <h1>Welcome!</h1>
+            <p>Thanks for signing up. We're excited to have you on board!</p>
+            <a href="https://yourdomain.com/dashboard">Get Started</a>
+          `,
+          text: 'Welcome! Thanks for signing up. Visit https://yourdomain.com/dashboard to get started.'
+        });
+
+        console.log('Email sent successfully:', result.id);
+      } catch (error) {
+        console.error('Failed to send email:', error);
+      }
+    }
+
+    sendWelcomeEmail();
+    ```
+  </Tab>
+  <Tab value="python" title="Python">
+    ```python
+    import os
+    from sendincraft import SendinCraft
+
+    client = SendinCraft(api_key=os.getenv('SENDINCRAFT_API_KEY'))
+
+    def send_welcome_email():
+        try:
+            result = client.emails.send(
+                from_email='welcome@yourdomain.com',
+                to='user@example.com',
+                subject='Welcome to our platform!',
+                html='''
+                    <h1>Welcome!</h1>
+                    <p>Thanks for signing up. We're excited to have you on board!</p>
+                    <a href="https://yourdomain.com/dashboard">Get Started</a>
+                ''',
+                text='Welcome! Thanks for signing up. Visit https://yourdomain.com/dashboard to get started.'
+            )
+            
+            print(f'Email sent successfully: {result.id}')
+        except Exception as error:
+            print(f'Failed to send email: {error}')
+
+    send_welcome_email()
+    ```
+  </Tab>
+  <Tab value="curl" title="cURL">
+    ```bash
+    curl -X POST https://api.sendincraft.com/v1/emails \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "from": "welcome@yourdomain.com",
+        "to": "user@example.com",
+        "subject": "Welcome to our platform!",
+        "html": "<h1>Welcome!</h1><p>Thanks for signing up!</p>",
+        "text": "Welcome! Thanks for signing up."
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+## Step 6: Check Email Status
+
+Monitor your email delivery:
+
+```javascript
+// Get email status
+const email = await client.emails.get('email_id_here');
+console.log('Email status:', email.status);
+
+// List recent emails
+const emails = await client.emails.list({ limit: 10 });
+emails.data.forEach(email => {
+  console.log(`${email.id}: ${email.status}`);
+});
+```
+
+## Environment Variables
+
+For security, store your API key as an environment variable:
+
+```bash
+# .env file
+SENDINCRAFT_API_KEY=your_api_key_here
+```
+
+<Callout type="info">
+  **Best Practice:** Use different API keys for development, staging, and production environments.
+</Callout>
+
+## Next Steps
+
+Now that you've sent your first email, explore these features:
+
+- **[Email Templates](/docs/templates)** - Use pre-built templates or create custom ones
+- **[Webhooks](/docs/webhooks)** - Receive real-time delivery notifications
+- **[Analytics](/docs/analytics)** - Track email performance and engagement
+- **[API Reference](/docs/api)** - Explore all available endpoints
+
+## Troubleshooting
+
+### Common Issues
+
+**Domain not verified?**
+- Check that DNS records are correctly added
+- Wait up to 48 hours for DNS propagation
+- Contact support if issues persist
+
+**API key not working?**
+- Ensure you're using the correct API key
+- Check that the key hasn't been revoked
+- Verify you're using the right environment (test/live)
+
+**Emails not delivering?**
+- Check your sender reputation
+- Verify recipient email addresses
+- Review bounce and complaint rates
+
+<Callout type="info">
+  Need help? Contact our support team at [support@sendincraft.com](mailto:support@sendincraft.com)
+</Callout>
