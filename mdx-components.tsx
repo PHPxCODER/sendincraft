@@ -1,5 +1,3 @@
-// mdx-components.tsx
-
 import type { MDXComponents } from "mdx/types";
 import { Callout } from "fumadocs-ui/components/callout";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
