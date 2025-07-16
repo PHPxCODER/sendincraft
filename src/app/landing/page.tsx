@@ -746,6 +746,37 @@ const FooterComponent = () => {
           ))}
         </div>
       </div>
+      {/* Branding with animation - Fixed positioning */}
+      <div className="absolute bottom-4 left-0 right-0 z-10">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="text-center text-xs text-muted-foreground/70 font-inter whitespace-nowrap px-4"
+        >
+          Crafted with{" "}
+          <span
+            className="inline-block text-red-500"
+            style={{
+              animation: "smoothPulse 1.5s ease-in-out infinite",
+            }}
+          >
+            ❤
+          </span>
+          {" "}by{" "}
+          <a
+            href="https://rdpdatacenter.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary/80 font-medium hover:text-primary transition-colors duration-200 inline-flex items-center gap-1"
+          >
+            RDP Datacenter
+            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </motion.div>
+      </div>
     </footer>
   );
 };
