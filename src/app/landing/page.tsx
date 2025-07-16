@@ -183,12 +183,12 @@ const HeroSection = () => {
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
               <div className="text-left text-sm text-green-400 font-mono">
-                <div>curl -X POST https://api.sendincraft.com/send \</div>
+                <div>curl -X POST https://api.sendincraft.com/v1/send \</div>
                 <div className="ml-4">-H &quot;Authorization: Bearer YOUR_API_KEY&quot; \</div>
                 <div className="ml-4">-H &quot;Content-Type: application/json&quot; \</div>
                 <div className="ml-4">-d &apos;{`{`}</div>
-                <div className="ml-8">&quot;to&quot;: &quot;user@example.com&quot;,</div>
-                <div className="ml-8">&quot;subject&quot;: &quot;Welcome to our platform&quot;,</div>
+                <div className="ml-8">&quot;to&quot;: &quot;hello@sendincraft.com&quot;,</div>
+                <div className="ml-8">&quot;subject&quot;: &quot;Welcome to our Platform&quot;,</div>
                 <div className="ml-8">&quot;html&quot;: &quot;&lt;h1&gt;Welcome!&lt;/h1&gt;&quot;</div>
                 <div className="ml-4">{`}`}&apos;</div>
               </div>
