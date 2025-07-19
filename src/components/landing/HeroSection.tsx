@@ -1,7 +1,7 @@
-// components/HeroSection.tsx
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import Navigation from './Navigation';
+import Terminal from './Terminal';
 import { AnimatedGroup } from '@/components/ui/animated-group'; // Import AnimatedGroup
 import { TextEffect } from '@/components/ui/text-effect'; // Import TextEffect
 import { Variants, Transition } from 'framer-motion';
@@ -119,29 +119,13 @@ const HeroSection = () => {
             </AnimatedGroup>
           </div>
 
-          {/* You can also wrap the code block image/container in AnimatedGroup if you want it to animate */}
+          {/* Terminal component wrapped in AnimatedGroup */}
           <AnimatedGroup
             variants={{ item: itemVariants }}
             className="relative mx-auto my-20 w-full max-w-6xl"
           >
             <div className="absolute inset-0 rounded bg-white opacity-20 shadow-lg blur-[10rem]" />
-            <div className="relative h-96 w-full rounded-lg border border-gray-700 bg-gradient-to-br from-gray-900 to-black p-6">
-              <div className="mb-4 flex items-center space-x-2">
-                <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                <div className="h-3 w-3 rounded-full bg-green-500"></div>
-              </div>
-              <div className="text-left font-mono text-sm text-green-400">
-                <div>curl -X POST https://api.sendincraft.com/v1/send \</div>
-                <div className="ml-4">-H &quot;Authorization: Bearer YOUR_API_KEY&quot; \</div>
-                <div className="ml-4">-H &quot;Content-Type: application/json&quot; \</div>
-                <div className="ml-4">-d &apos;{`{`}</div>
-                <div className="ml-8">&quot;to&quot;: &quot;hello@sendincraft.com&quot;,</div>
-                <div className="ml-8">&quot;subject&quot;: &quot;Welcome to our Platform&quot;,</div>
-                <div className="ml-8">&quot;html&quot;: &quot;&lt;h1&gt;Welcome!&lt;/h1&gt;&quot;</div>
-                <div className="ml-4">{`}`}&apos;</div>
-              </div>
-            </div>
+            <Terminal />
           </AnimatedGroup>
         </AnimatedGroup>
       </div>
