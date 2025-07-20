@@ -2,21 +2,21 @@ import type { Metadata } from "next";
 import NotFoundPage from "@/components/NotFound";
 
 export const metadata: Metadata = {
-  title: "404 - Page Not Found | SendinCraft",
+  title: "Page Not Found | SendinCraft",
   description: "The page you're looking for doesn't exist. Get back to SendinCraft - the most reliable transactional email service.",
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
-    title: "404 - Page Not Found | SendinCraft",
+    title: "Page Not Found | SendinCraft",
     description: "The page you're looking for doesn't exist. Get back to SendinCraft - the most reliable transactional email service.",
     type: "website",
     url: "https://sendincraft.com/404",
   },
   twitter: {
     card: "summary",
-    title: "404 - Page Not Found | SendinCraft",
+    title: "Page Not Found | SendinCraft",
     description: "The page you're looking for doesn't exist. Get back to SendinCraft - the most reliable transactional email service.",
   },
 };
