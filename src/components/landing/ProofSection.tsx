@@ -15,7 +15,7 @@ const ProofSection = () => {
     <section className="bg-black py-20">
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-white">
+          <h2 className="font-raleway mb-4 text-3xl font-bold text-white">
             Trusted by Developers Worldwide
           </h2>
           <p className="text-gray-400">
