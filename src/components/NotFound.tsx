@@ -9,14 +9,14 @@ export default function NotFoundPage() {
     <div className="min-h-screen w-full bg-background relative antialiased overflow-hidden">
       <div className="w-full h-screen mx-auto relative flex flex-col items-center justify-center">
         
-        {/* 404 Image - Background layer at 90% size */}
+        {/* 404 Image - Background layer at 70% size */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="absolute inset-0 flex items-center justify-center z-0"
         >
-          <div className="relative w-[87vw] h-[87vh]" style={{ maxWidth: '2224px', maxHeight: '1246px' }}>
+          <div className="relative w-[70vw] h-[70vh]" style={{ maxWidth: '2224px', maxHeight: '1246px' }}>
             <Image
               src="/404.png"
               alt="404 Not Found"
@@ -31,7 +31,7 @@ export default function NotFoundPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="absolute bottom-1/9 left-1/2 transform -translate-x-1/2 z-20 text-sm text-muted-foreground/80 text-center px-4"
+          className="absolute bottom-1/5 left-1/2 transform -translate-x-1/2 z-20 text-sm text-muted-foreground/80 text-center px-4"
         >
           <div className="flex flex-col gap-1">
             <div>
