@@ -1,5 +1,6 @@
 "use client"
 import React from 'react';
+import { Terminal as TerminalIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface TerminalProps {
@@ -98,7 +99,8 @@ const Terminal: React.FC<TerminalProps> = ({ className = '' }) => {
         <div className="h-3 w-3 rounded-full bg-red-500 shadow-sm"></div>
         <div className="h-3 w-3 rounded-full bg-yellow-500 shadow-sm"></div>
         <div className="h-3 w-3 rounded-full bg-green-500 shadow-sm"></div>
-        <div className="ml-4 text-xs text-gray-500">sendincraft-terminal</div>
+        <TerminalIcon className="ml-4 w-4 h-4 text-green-400" />
+        <div className="text-xs text-gray-500">sendincraft-terminal</div>
       </div>
       
       {/* Terminal content */}
