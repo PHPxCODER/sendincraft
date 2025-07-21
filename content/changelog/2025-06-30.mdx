@@ -1,24 +1,24 @@
 ---
-title: "Release 2.1 - Kimi K2 Support"
-description: "Major improvements to AI agent reasoning, conversation handling, and multi-modal processing"
+title: "Release 2.1 - SMTP Integration and Custom Email Infrastructure"
+description: "Advanced SMTP capabilities with custom email server integration and flexible delivery options"
 date: "2025-06-30"
-tags: ["AI", "Performance", "Reasoning", "Multi-modal"]
+tags: ["SMTP", "Email Infrastructure", "Custom Domains", "Delivery"]
 version: "2.1"
 ---
 
 <Video src="/demo.mp4" />
 
-- **Advanced reasoning engine** with improved logical thinking
-- **Multi-modal processing** for text, images, and code analysis
-- **Context-aware responses** with better conversation memory
-- **Adaptive communication** that matches user preferences
+- **Custom SMTP server integration** with support for multiple email service providers and third-party solutions
+- **Flexible email routing system** with intelligent failover between AWS SES and custom SMTP endpoints
+- **Advanced domain management** with automated DNS configuration and DKIM/SPF record validation
+- **Multi-provider email delivery** with load balancing and automatic provider switching for optimal deliverability
 
 ```tsx
 // Example of updated API usage
-const agent = new AIAgent({
-  model: "kimi-k2",
-  reasoning: "enhanced",
-  multiModal: true,
+const sendinCraftClient = new SendinCraftClient({
+  smtp: "custom-provider",
+  routing: "intelligent-failover",
+  domains: "multi-provider",
 })
 ```
 
@@ -28,13 +28,13 @@ const agent = new AIAgent({
     <AccordionContent className="flex flex-col gap-4 text-balance">
       <ul className="list-disc space-y-2 pl-4">
         <li>
-          <strong>45% faster response generation</strong> across all model types
+          <strong>99% email delivery success rate</strong> through intelligent SMTP provider routing
         </li>
-        <li>New API endpoints for custom AI agent implementations</li>
-        <li>Enhanced webhook support for real-time notifications</li>
-        <li>Improved SDK with TypeScript definitions</li>
-        <li>Updated knowledge base with latest information</li>
-        <li>Enhanced creative writing and brainstorming capabilities</li>
+        <li>Advanced SMTP configuration APIs with automatic connection testing and validation</li>
+        <li>Enhanced email authentication with automated DKIM key generation and rotation</li>
+        <li>Improved custom domain SDK with comprehensive DNS management tools</li>
+        <li>Updated email routing algorithms with real-time provider health monitoring</li>
+        <li>Enhanced SMTP failover mechanisms with instant provider switching</li>
       </ul>
     </AccordionContent>
   </AccordionItem>
@@ -42,11 +42,11 @@ const agent = new AIAgent({
     <AccordionTrigger>Bug Fixes</AccordionTrigger>
     <AccordionContent className="flex flex-col gap-4 text-balance">
       <ul className="list-disc space-y-2 pl-4">
-        <li>Fixed conversation context loss during long sessions</li>
-        <li>Resolved inconsistent response formatting issues</li>
-        <li>Improved error handling for complex queries</li>
-        <li>Fixed memory retention problems in extended conversations</li>
-        <li>Better error reporting and debugging tools</li>
+        <li>Fixed SMTP connection timeout issues with custom email providers</li>
+        <li>Resolved DNS propagation delays affecting domain verification status</li>
+        <li>Improved SMTP authentication handling for providers with strict security</li>
+        <li>Fixed email routing logic causing delivery delays during provider switching</li>
+        <li>Better SMTP error handling and diagnostic reporting for failed connections</li>
       </ul>
     </AccordionContent>
   </AccordionItem>
