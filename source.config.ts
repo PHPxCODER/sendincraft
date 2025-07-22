@@ -1,4 +1,4 @@
-import { defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
+import { defineCollections, defineConfig, defineDocs, frontmatterSchema } from "fumadocs-mdx/config";
 import { z } from "zod"
 
 export const docsfr = defineDocs({
@@ -22,3 +22,14 @@ export const { docs, meta } = defineDocs({
 	  }),
 	},
   })
+
+  export const blogPosts = defineCollections({
+	type: 'doc',
+	dir: 'content/blog',
+	// add required frontmatter properties
+	schema: frontmatterSchema.extend({
+	  author: z.string(),
+	  date: z.string().date().or(z.date()),
+	}),
+  });
+  
