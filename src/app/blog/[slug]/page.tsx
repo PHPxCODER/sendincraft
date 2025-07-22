@@ -1,6 +1,6 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { Metadata } from 'next';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { blog } from '@/lib/source';
@@ -12,12 +12,17 @@ import SocialShare from '../SocialShare';
 import StickyHeader from '../StickyHeader';
 import BlogBreadcrumb from '../BlogBreadcrumb';
 
-interface BlogPostPageProps {
-  params: Promise<{ slug: string }>;
+// Utility function to estimate reading time
+function estimateReadingTime(content: string): number {
+  // Average reading speed is about 200-250 words per minute
+  const wordsPerMinute = 225;
+  const wordCount = content.split(/\s+/).length;
+  return Math.ceil(wordCount / wordsPerMinute);
 }
 
-// Generate metadata for SEO
-export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
   const page = blog.getPage([params.slug]);
 
@@ -32,27 +37,20 @@ export async function generateMetadata(props: BlogPostPageProps): Promise<Metada
   const publishedDate = new Date(date).toISOString();
   const url = `https://sendincraft.com/blog/${params.slug}`;
 
-  // Extract keywords from title and description for better SEO
-  const extractKeywords = (text: string) => {
-    const commonWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should'];
-    return text.toLowerCase()
-      .replace(/[^\w\s]/g, ' ')
-      .split(' ')
-      .filter(word => word.length > 3 && !commonWords.includes(word))
-      .slice(0, 10);
-  };
+  // Determine reading time
+  const readingTime = estimateReadingTime(
+    page.data.title + ' ' + (page.data.description || '')
+  );
 
-  const titleKeywords = extractKeywords(title);
-  const descKeywords = description ? extractKeywords(description) : [];
-  const keywords = [...new Set([...titleKeywords, ...descKeywords, 'sendincraft', 'email', 'transactional email'])];
+  // Construct OG image URL
+  const ogImageUrl = new URL('/api/og', 'https://sendincraft.com');
+  ogImageUrl.searchParams.set('title', title);
+  ogImageUrl.searchParams.set('author', author);
+  ogImageUrl.searchParams.set('readTime', readingTime.toString());
 
   return {
     title: `${title} | SendinCraft Blog`,
-    description: description || `Read ${title} by ${author} on the SendinCraft blog. Learn about email development, security, and best practices.`,
-    keywords: keywords,
-    authors: [{ name: author }],
-    creator: author,
-    publisher: 'SendinCraft',
+    description: description || `Read ${title} by ${author} on the SendinCraft blog.`,
     openGraph: {
       title: `${title} | SendinCraft Blog`,
       description: description || `Read ${title} by ${author} on the SendinCraft blog.`,
@@ -61,39 +59,25 @@ export async function generateMetadata(props: BlogPostPageProps): Promise<Metada
       siteName: 'SendinCraft',
       publishedTime: publishedDate,
       authors: [author],
-      tags: keywords,
-      images: [
-        {
-          url: `/og-blog-${params.slug}.jpg`,
-          width: 1200,
-          height: 630,
-          alt: title,
-        }
-      ],
+      images: [{
+        url: ogImageUrl.toString(),
+        width: 1200,
+        height: 630,
+        alt: title,
+      }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} | SendinCraft Blog`,
       description: description || `Read ${title} by ${author} on the SendinCraft blog.`,
-      creator: '@sendincraft',
-      images: [`/og-blog-${params.slug}.jpg`],
-    },
-    alternates: {
-      canonical: url,
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
-    other: {
-      'article:published_time': publishedDate,
-      'article:author': author,
-      'article:section': 'Email Development',
+      images: [ogImageUrl.toString()],
     },
   };
 }
 
-export default async function BlogPostPage(props: BlogPostPageProps) {
+export default async function BlogPostPage(props: {
+  params: Promise<{ slug: string }>;
+}) {
   const params = await props.params;
   const page = blog.getPage([params.slug]);
 
@@ -102,18 +86,16 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
   const { title, description, date, author } = page.data;
   const Mdx = page.data.body;
   
+  // Estimate reading time
+  const readingTime = estimateReadingTime(
+    page.data.title + ' ' + (page.data.description || '')
+  );
+
   // Get other posts for recommendations
   const allPosts = blog.getPages();
-  const otherPosts = allPosts.filter(post => post.url !== page.url).slice(0, 3);
-
-  // Estimate reading time
-  const estimateReadingTime = (content: string) => {
-    const wordsPerMinute = 200;
-    const wordCount = content.split(' ').length;
-    return Math.ceil(wordCount / wordsPerMinute);
-  };
-
-  const readingTime = estimateReadingTime(page.data.title + ' ' + (page.data.description || ''));
+  const otherPosts = allPosts
+    .filter(post => post.url !== page.url)
+    .slice(0, 3);
 
   return (
     <>

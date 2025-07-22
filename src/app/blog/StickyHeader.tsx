@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Share2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
@@ -21,39 +21,6 @@ export default function StickyHeader({ title, className = '' }: StickyHeaderProp
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
-  // Check if Web Share API is actually supported
-  const isWebShareSupported = () => {
-    return typeof navigator !== 'undefined' && 'share' in navigator && typeof navigator.share === 'function';
-  };
-  
-  const handleShare = async () => {
-    if (isWebShareSupported()) {
-      try {
-        await navigator.share({
-          title,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.error('Native share failed:', err);
-        // Fallback to copying link
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          // You could add a toast notification here
-        } catch (clipboardErr) {
-          console.error('Clipboard failed:', clipboardErr);
-        }
-      }
-    } else {
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        // You could add a toast notification here
-      } catch (err) {
-        console.error('Clipboard failed:', err);
-      }
-    }
-  };
   
   return (
     <header className={cn(
@@ -75,10 +42,6 @@ export default function StickyHeader({ title, className = '' }: StickyHeaderProp
           )}>
             {title}
           </h2>
-          <Button variant="ghost" size="sm" onClick={handleShare} className="gap-2">
-            <Share2 className="w-4 h-4" />
-            Share
-          </Button>
         </div>
       </div>
     </header>
