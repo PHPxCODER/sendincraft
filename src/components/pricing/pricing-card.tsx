@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import { PurpleThickCheck, ThickCheck } from '../icons/icons';
 import { PricingSwitch } from './pricing-switch';

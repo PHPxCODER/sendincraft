@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Plus, PurpleThickCheck, ThickCheck } from '../icons/icons';
 
 export default function Comparision() {
