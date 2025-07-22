@@ -1,43 +1,341 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { blog } from '@/lib/source';
+import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { ScrollProgress } from '@/components/magicui/scroll-progress';
+import SocialShare from '../SocialShare';
+import StickyHeader from '../StickyHeader';
+import BlogBreadcrumb from '../BlogBreadcrumb';
 
-export default async function Page(props: {
+interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
-}) {
+}
+
+// Generate metadata for SEO
+export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {
+  const params = await props.params;
+  const page = blog.getPage([params.slug]);
+
+  if (!page) {
+    return {
+      title: 'Post Not Found | SendinCraft Blog',
+      description: 'The blog post you are looking for could not be found.',
+    };
+  }
+
+  const { title, description, date, author } = page.data;
+  const publishedDate = new Date(date).toISOString();
+  const url = `https://sendincraft.com/blog/${params.slug}`;
+
+  // Extract keywords from title and description for better SEO
+  const extractKeywords = (text: string) => {
+    const commonWords = ['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should'];
+    return text.toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(' ')
+      .filter(word => word.length > 3 && !commonWords.includes(word))
+      .slice(0, 10);
+  };
+
+  const titleKeywords = extractKeywords(title);
+  const descKeywords = description ? extractKeywords(description) : [];
+  const keywords = [...new Set([...titleKeywords, ...descKeywords, 'sendincraft', 'email', 'transactional email'])];
+
+  return {
+    title: `${title} | SendinCraft Blog`,
+    description: description || `Read ${title} by ${author} on the SendinCraft blog. Learn about email development, security, and best practices.`,
+    keywords: keywords,
+    authors: [{ name: author }],
+    creator: author,
+    publisher: 'SendinCraft',
+    openGraph: {
+      title: `${title} | SendinCraft Blog`,
+      description: description || `Read ${title} by ${author} on the SendinCraft blog.`,
+      type: 'article',
+      url,
+      siteName: 'SendinCraft',
+      publishedTime: publishedDate,
+      authors: [author],
+      tags: keywords,
+      images: [
+        {
+          url: `/og-blog-${params.slug}.jpg`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | SendinCraft Blog`,
+      description: description || `Read ${title} by ${author} on the SendinCraft blog.`,
+      creator: '@sendincraft',
+      images: [`/og-blog-${params.slug}.jpg`],
+    },
+    alternates: {
+      canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    other: {
+      'article:published_time': publishedDate,
+      'article:author': author,
+      'article:section': 'Email Development',
+    },
+  };
+}
+
+export default async function BlogPostPage(props: BlogPostPageProps) {
   const params = await props.params;
   const page = blog.getPage([params.slug]);
 
   if (!page) notFound();
+
+  const { title, description, date, author } = page.data;
   const Mdx = page.data.body;
+  
+  // Get other posts for recommendations
+  const allPosts = blog.getPages();
+  const otherPosts = allPosts.filter(post => post.url !== page.url).slice(0, 3);
+
+  // Estimate reading time
+  const estimateReadingTime = (content: string) => {
+    const wordsPerMinute = 200;
+    const wordCount = content.split(' ').length;
+    return Math.ceil(wordCount / wordsPerMinute);
+  };
+
+  const readingTime = estimateReadingTime(page.data.title + ' ' + (page.data.description || ''));
 
   return (
     <>
-      <div className="container rounded-xl border py-12 md:px-8">
-        <h1 className="mb-2 text-3xl font-bold">{page.data.title}</h1>
-        <p className="mb-4 text-fd-muted-foreground">{page.data.description}</p>
-        <Link href="/blog">Back</Link>
-      </div>
-      <article className="container flex flex-col px-4 py-8">
-        <div className="prose min-w-0">
-          <InlineTOC items={page.data.toc} />
-          <Mdx components={defaultMdxComponents} />
-        </div>
-        <div className="flex flex-col gap-4 text-sm">
-          <div>
-            <p className="mb-1 text-fd-muted-foreground">Written by</p>
-            <p className="font-medium">{page.data.author}</p>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: title,
+            description: description,
+            author: {
+              '@type': 'Person',
+              name: author,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'SendinCraft',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://sendincraft.com/logo.png',
+              },
+            },
+            datePublished: new Date(date).toISOString(),
+            dateModified: new Date(date).toISOString(),
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `https://sendincraft.com/blog/${params.slug}`,
+            },
+            image: `https://sendincraft.com/og-blog-${params.slug}.jpg`,
+            url: `https://sendincraft.com/blog/${params.slug}`,
+          }),
+        }}
+      />
+
+      {/* MagicUI Scroll Progress - positioned below sticky header */}
+      <ScrollProgress className="top-[73px]" />
+
+      <main className="min-h-screen bg-gradient-to-b from-background to-muted/10">
+        {/* Sticky Header - Client Component */}
+        <StickyHeader title={title} />
+
+        {/* Breadcrumb */}
+        <section className="py-4 border-b border-border/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <BlogBreadcrumb 
+                items={[
+                  { label: title }
+                ]} 
+              />
+            </div>
           </div>
-          <div>
-            <p className="mb-1 text-sm text-fd-muted-foreground">At</p>
-            <p className="font-medium">
-              {new Date(page.data.date).toDateString()}
-            </p>
+        </section>
+
+        {/* Hero Section */}
+        <section className="py-12 sm:py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              {/* Article Meta */}
+              <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span className="font-medium">{author}</span>
+                </div>
+                <div className="w-1 h-1 bg-muted-foreground rounded-full" />
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <time dateTime={date.toString()}>
+                    {formatDate(new Date(date))}
+                  </time>
+                </div>
+                <div className="w-1 h-1 bg-muted-foreground rounded-full" />
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>{readingTime} min read</span>
+                </div>
+              </div>
+              
+              {/* Article Title */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
+                {title}
+              </h1>
+              
+              {/* Article Description */}
+              {description && (
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                  {description}
+                </p>
+              )}
+              
+              {/* Social Share - Client Component */}
+              <SocialShare 
+                title={title} 
+                className="pt-6 border-t border-border/50" 
+              />
+            </div>
           </div>
-        </div>
-      </article>
+        </section>
+
+        {/* Article Content */}
+        <article className="py-8">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+                {/* Table of Contents - Sidebar */}
+                <aside className="lg:col-span-1 order-2 lg:order-1">
+                  <div className="lg:sticky lg:top-24">
+                    <div className="bg-card border border-border/50 rounded-xl p-6">
+                      <h3 className="font-semibold mb-4">Table of Contents</h3>
+                      <InlineTOC items={page.data.toc} />
+                    </div>
+                  </div>
+                </aside>
+                
+                {/* Main Content */}
+                <div className="lg:col-span-3 order-1 lg:order-2">
+                  <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg">
+                    <Mdx components={defaultMdxComponents} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        {/* Author Bio */}
+        <section className="py-12 border-t border-border/50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-card border border-border/50 rounded-xl p-8">
+                <div className="flex items-start gap-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {author.charAt(0)}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold mb-2">Written by {author}</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Expert in email development and transactional email systems. Passionate about helping developers build reliable email infrastructure.
+                    </p>
+                    <div className="flex gap-3">
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href="/blog">View Profile</Link>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href="/blog">More Articles</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Related Posts */}
+        {otherPosts.length > 0 && (
+          <section className="py-12">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold mb-2">Related Articles</h2>
+                  <p className="text-muted-foreground">Continue your email development journey</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {otherPosts.map((post) => (
+                    <Link key={post.url} href={post.url} className="group">
+                      <article className="bg-card border border-border/50 rounded-xl p-6 h-full hover:border-border transition-all duration-300 hover:shadow-lg">
+                        <div className="mb-4">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                            <span>{post.data.author}</span>
+                            <div className="w-1 h-1 bg-muted-foreground rounded-full" />
+                            <time dateTime={post.data.date.toString()}>
+                              {formatDate(new Date(post.data.date))}
+                            </time>
+                          </div>
+                          <h3 className="font-semibold group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                            {post.data.title}
+                          </h3>
+                          {post.data.description && (
+                            <p className="text-sm text-muted-foreground line-clamp-3">
+                              {post.data.description}
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-primary font-medium group-hover:gap-3 transition-all duration-300">
+                          <span>Read article</span>
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" />
+                        </div>
+                      </article>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Newsletter CTA */}
+        <section className="py-16 border-t border-border/50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="bg-gradient-to-br from-primary/10 to-purple-600/10 border border-primary/20 rounded-2xl p-8">
+                <h2 className="text-2xl font-bold mb-4">
+                  Enjoyed this article?
+                </h2>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Join our newsletter to get the latest email development insights, tutorials, and best practices delivered to your inbox.
+                </p>
+                <Button asChild size="lg" className="gap-2">
+                  <Link href="/#waitlist">
+                    Subscribe to Newsletter
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </>
   );
 }
