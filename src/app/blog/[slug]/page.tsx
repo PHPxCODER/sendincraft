@@ -205,16 +205,13 @@ export default async function BlogPostPage(props: {
                 {/* Table of Contents - Sidebar */}
                 <aside className="lg:col-span-1 order-2 lg:order-1">
                   <div className="lg:sticky lg:top-24">
-                    <div className="bg-card border border-border/50 rounded-xl p-6">
-                      <h3 className="font-semibold mb-4">Table of Contents</h3>
-                      <InlineTOC items={page.data.toc} />
-                    </div>
+                    <InlineTOC items={page.data.toc} defaultOpen />
                   </div>
                 </aside>
                 
                 {/* Main Content */}
                 <div className="lg:col-span-3 order-1 lg:order-2">
-                  <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg">
+                  <div className="prose prose-lg dark:prose-invert max-w-none break-words overflow-wrap-anywhere prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:break-all prose-pre:bg-muted prose-pre:border prose-pre:overflow-x-auto prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg">
                     <Mdx components={defaultMdxComponents} />
                   </div>
                 </div>
@@ -227,21 +224,18 @@ export default async function BlogPostPage(props: {
         <section className="py-12 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-card border border-border/50 rounded-xl p-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+            <div className="bg-card border border-border/50 rounded-xl p-4 sm:p-8">
+                <div className="flex items-start gap-3 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-xl flex-shrink-0">
                     {author.charAt(0)}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold mb-2">Written by {author}</h3>
-                    <p className="text-muted-foreground mb-4">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2">Written by {author}</h3>
+                    <p className="text-muted-foreground mb-4 text-sm sm:text-base">
                       Expert in email development and transactional email systems. Passionate about helping developers build reliable email infrastructure.
                     </p>
-                    <div className="flex gap-3">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href="/blog">View Profile</Link>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto" asChild>
                         <Link href="/blog">More Articles</Link>
                       </Button>
                     </div>

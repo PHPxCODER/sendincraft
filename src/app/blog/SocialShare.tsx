@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Share2, Twitter, Linkedin, Copy, Check } from 'lucide-react';
+import { Twitter, Linkedin, Copy, Check } from 'lucide-react';
 import { useState } from 'react';
 
 interface SocialShareProps {
@@ -33,35 +33,10 @@ export default function SocialShare({ title, url, className = '' }: SocialShareP
     }
   };
   
-  // Check if Web Share API is actually supported
-  const isWebShareSupported = () => {
-    return typeof navigator !== 'undefined' && 'share' in navigator && typeof navigator.share === 'function';
-  };
-  
-  const handleNativeShare = async () => {
-    if (isWebShareSupported()) {
-      try {
-        await navigator.share({
-          title,
-          url: shareUrl,
-        });
-      } catch (err) {
-        console.error('Native share failed:', err);
-      }
-    }
-  };
-  
   return (
     <div className={`flex items-center gap-4 ${className}`}>
       <span className="text-sm font-medium">Share:</span>
       <div className="flex items-center gap-2">
-        {/* Native share button for mobile */}
-        {isWebShareSupported() && (
-          <Button variant="outline" size="icon" onClick={handleNativeShare}>
-            <Share2 className="w-4 h-4" />
-          </Button>
-        )}
-        
         {/* Desktop share buttons */}
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={handleTwitterShare}>
