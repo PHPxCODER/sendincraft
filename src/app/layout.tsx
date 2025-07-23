@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { RootProvider } from 'fumadocs-ui/provider';
 import { Plus_Jakarta_Sans, Raleway } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider"
+import TopLoader from "@/components/TopLoaderWrapper";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -72,8 +73,9 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >
+          ><TopLoader>
             {children}
+          </TopLoader>
           </ThemeProvider>
         </RootProvider>
       </body>
