@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
+import { getGithubLastEdit } from 'fumadocs-core/server';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { blog } from '@/lib/source';
 import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
@@ -91,6 +92,15 @@ export default async function BlogPostPage(props: {
     page.data.title + ' ' + (page.data.description || '')
   );
 
+  // Get last modified time from GitHub
+const lastModified = await getGithubLastEdit({
+  owner: 'PHPxCODER',
+  repo: 'sendincraft',
+  path: `content/blog/${params.slug}.mdx`,
+  token: process.env.GIT_TOKEN ? `Bearer ${process.env.GIT_TOKEN}` : undefined,
+});
+
+
   // Get other posts for recommendations
   const allPosts = blog.getPages();
   const otherPosts = allPosts
@@ -175,7 +185,7 @@ export default async function BlogPostPage(props: {
                   <span>{readingTime} min read</span>
                 </div>
               </div>
-              
+
               {/* Article Title */}
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
                 {title}
@@ -211,8 +221,24 @@ export default async function BlogPostPage(props: {
                 
                 {/* Main Content */}
                 <div className="lg:col-span-3 order-1 lg:order-2">
-                  <div className="prose prose-lg dark:prose-invert max-w-none break-words overflow-wrap-anywhere prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:break-all prose-pre:bg-muted prose-pre:border prose-pre:overflow-x-auto prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg">
+                <div className="prose prose-lg dark:prose-invert max-w-none break-words overflow-wrap-anywhere prose-headings:scroll-mt-24 prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline prose-a:hover:underline prose-strong:text-foreground prose-code:text-primary prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:break-all prose-pre:bg-muted prose-pre:border prose-pre:overflow-x-auto prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg">
                     <Mdx components={defaultMdxComponents} />
+
+                    {/* Last Modified and Edit Section */}
+                    {lastModified && (
+                      <div className="not-prose mt-12 pt-6 border-t border-border/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          <span>Last updated {formatDate(lastModified)}</span>
+                        </div>
+                        <Button variant="ghost" size="sm" className="gap-2 w-fit" asChild>
+                          <Link href={`https://github.com/PHPxCODER/sendincraft/edit/main/content/blog/${params.slug}.mdx`} target="_blank" rel="noopener noreferrer">
+                            Edit on GitHub
+                            <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
