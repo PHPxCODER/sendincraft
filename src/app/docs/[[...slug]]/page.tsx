@@ -50,7 +50,7 @@ export default async function Page(props: {
               <span>Last updated {formatDate(lastModified)}</span>
             </div>
             <Button variant="ghost" size="sm" className="gap-2 w-fit" asChild>
-              <Link href={`https://github.com/PHPxCODER/sendincraft/edit/main/content/docs/${params.slug}.mdx`} target="_blank" rel="noopener noreferrer">
+              <Link href={`https://github.com/PHPxCODER/sendincraft/edit/main/content/docs/${slugPath}.mdx`} target="_blank" rel="noopener noreferrer">
                 Edit on GitHub
                 <ArrowRight className="w-3 h-3" />
               </Link>
