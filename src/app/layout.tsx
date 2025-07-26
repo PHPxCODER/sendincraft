@@ -18,6 +18,7 @@ const raleway = Raleway({
   display: 'swap',
 });
 
+
 export const metadata: Metadata = {
   title: "SendinCraft - Developer-First Transactional Email Service",
   description: "The most reliable and developer-friendly transactional email service. Send emails with lightning-fast delivery, powerful APIs, and 99.9% uptime. Join the waitlist for early access.",
@@ -55,6 +56,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sendincraft.com"),
   alternates: {
     canonical: "/",
+    types: {
+      'application/rss+xml': [
+        {
+          title: 'SendinCraft Blog - Email Development Insights',
+          url: 'https://sendincraft.com/blog/rss.xml',
+        },
+      ],
+    },
   },
 };
 
