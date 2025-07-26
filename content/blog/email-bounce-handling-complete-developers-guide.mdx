@@ -1,0 +1,203 @@
+---
+title: Email Bounce Handling - The Complete Developer's Guide
+description: Learn how to handle email bounces effectively to maintain sender reputation and improve deliverability. Understand hard vs soft bounces, implement proper suppression lists, and avoid common pitfalls.
+author: SendinCraft Team
+date: 2025-07-26
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+# Email Bounce Handling: The Complete Developer's Guide
+
+Email bounces are inevitable when sending transactional emails at scale. How you handle them can make or break your email deliverability and sender reputation. In this guide, we'll explore everything you need to know about bounce handling without getting lost in implementation details.
+
+## What Are Email Bounces?
+
+An email bounce occurs when your email cannot be delivered to the recipient's inbox and gets returned to the sender. Think of it like a letter being returned by the postal service, but digital bounces happen instantly and provide detailed reasons for the failure.
+
+Bounces directly impact your:
+- **Sender reputation** with email providers
+- **Deliverability rates** for future emails
+- **Customer experience** and engagement
+- **Email service costs**
+
+## Understanding Bounce Types
+
+### Hard Bounces: Permanent Failures
+
+Hard bounces are permanent delivery failures that won't resolve with retry attempts. These happen when:
+
+- **Email address doesn't exist** (typos or fake addresses)
+- **Domain is invalid** (expired or non-existent domains)
+- **Recipient has blocked you** (explicit blocking)
+- **Server permanently rejects** your emails
+
+<Callout type="warn">
+**Action Required:** Immediately remove these addresses from your mailing list and never attempt to email them again.
+</Callout>
+
+### Soft Bounces: Temporary Issues
+
+Soft bounces are temporary problems that might resolve themselves:
+
+- **Mailbox is full** (recipient's inbox over quota)
+- **Message too large** (attachments exceed limits)
+- **Server temporarily down** (maintenance or outages)
+- **Rate limiting** (sending too fast)
+- **Content filtered** (flagged by spam filters)
+
+<Callout type="info">
+**Strategy:** Implement retry logic with increasing delays, but convert to hard bounces after several failed attempts.
+</Callout>
+
+## The Business Impact of Poor Bounce Handling
+
+### Reputation Damage
+Email service providers track your bounce rates. High bounce rates signal poor list hygiene and result in:
+- Lower inbox placement rates
+- Increased spam folder delivery
+- Complete blocking by major providers
+
+### Financial Consequences
+- Wasted API calls on invalid addresses
+- Higher costs from email service providers
+- Lost revenue from failed critical emails (password resets, order confirmations)
+
+### Real Example
+A SaaS company with 100,000 users and a 5% hard bounce rate was wasting $500/month on failed sends and experiencing 15% lower deliverability. After implementing proper bounce handling, they reduced costs by 30% and improved deliverability to 98.5%.
+
+## Essential Bounce Handling Components
+
+### 1. Real-Time Bounce Detection
+
+Modern email services use webhooks to notify you of bounces instantly. Set up webhook endpoints to receive bounce notifications from:
+
+<Tabs>
+  <Tab value="aws-ses" title="AWS SES">
+    Uses Amazon SNS to deliver bounce notifications with detailed diagnostic information including bounce type, subtype, and specific error codes.
+  </Tab>
+  <Tab value="sendgrid" title="SendGrid">
+    Provides event webhooks with bounce data including email address, reason, and bounce classification.
+  </Tab>
+  <Tab value="mailgun" title="Mailgun">
+    Offers bounce webhooks with severity indicators and detailed failure reasons.
+  </Tab>
+</Tabs>
+
+### 2. Suppression List Management
+
+Create a robust suppression system that:
+- **Stores bounced emails** with timestamps and reasons
+- **Prevents future sends** to suppressed addresses
+- **Tracks bounce patterns** and frequencies
+- **Provides easy management** through APIs or dashboards
+
+### 3. Smart Retry Logic
+
+For soft bounces, implement intelligent retry mechanisms:
+- **Exponential backoff** (5 min, 15 min, 45 min, etc.)
+- **Maximum retry limits** (typically 5-7 attempts)
+- **Automatic conversion** to hard bounces after threshold
+- **Bounce reason analysis** for retry decisions
+
+## Best Practices for Production Systems
+
+### Monitor Key Metrics
+
+Track these critical bounce metrics:
+
+| Metric | Healthy Range | Action Threshold |
+|--------|---------------|------------------|
+| Hard bounce rate | < 2% | > 2% investigate |
+| Soft bounce rate | < 5% | > 5% check infrastructure |
+| Total bounce rate | < 3% | > 5% urgent review |
+
+### Pre-Send Validation
+
+Always check suppression lists before sending emails:
+- Validate email format and domain
+- Check against suppression database
+- Verify recent bounce history
+- Block sends to suppressed addresses
+
+### Async Processing
+
+<Callout type="warn">
+Process bounces asynchronously to avoid blocking your email sending pipeline. Use job queues for reliable bounce processing.
+</Callout>
+
+### Data Retention Policies
+
+- Keep hard bounce suppressions indefinitely
+- Archive old soft bounce retry records
+- Maintain bounce logs for analytics
+- Regular cleanup of outdated data
+
+## Common Pitfalls to Avoid
+
+### 1. Webhook Failures
+Ensure your webhook endpoints always return success responses (200 OK) even when processing fails internally. Failed webhooks can cause providers to stop sending notifications.
+
+### 2. Over-Aggressive Suppression
+Don't suppress emails too quickly for soft bounces. Some issues like "mailbox full" resolve within hours.
+
+### 3. Ignoring Bounce Patterns
+Monitor for unusual bounce patterns that might indicate:
+- Infrastructure issues
+- Content problems
+- List quality degradation
+- Provider-specific delivery issues
+
+### 4. Missing Feedback Loops
+Register for bounce feedback loops with major email providers to get additional delivery insights beyond standard bounces.
+
+## Advanced Strategies
+
+### Bounce Classification Intelligence
+Implement smart bounce classification that goes beyond basic hard/soft categorization:
+- Analyze diagnostic codes and error messages
+- Classify by specific failure reasons
+- Adjust retry strategies based on bounce types
+- Track provider-specific bounce patterns
+
+### List Hygiene Automation
+Set up automated processes to:
+- Remove obviously invalid emails before sending
+- Flag suspicious email patterns
+- Monitor domain reputation changes
+- Regular validation of existing email lists
+
+### Cross-Channel Impact Analysis
+Consider how email bounces affect:
+- User experience across platforms
+- Customer support ticket volume
+- Revenue from email-dependent flows
+- Overall customer lifecycle metrics
+
+## Bounce Handling with SendinCraft
+
+At SendinCraft, we handle bounce complexity automatically:
+
+- **Smart bounce detection** across all major providers
+- **Automatic suppression management** with API access
+- **Real-time bounce webhooks** for your applications
+- **Detailed analytics** and alerting systems
+- **Built-in retry logic** with intelligent classification
+
+This lets you focus on your core business while we ensure optimal email deliverability.
+
+## Conclusion
+
+Effective bounce handling is crucial for email deliverability success. The key principles are:
+
+1. **Distinguish** between hard and soft bounces
+2. **Suppress** hard bounces immediately
+3. **Retry** soft bounces intelligently
+4. **Monitor** bounce rates continuously
+5. **Process** bounces asynchronously
+6. **Maintain** clean suppression lists
+
+By implementing these strategies, you'll maintain a healthy sender reputation, reduce costs, and ensure your critical emails reach their intended recipients.
+
+Remember: bounce handling isn't a one-time setup. It requires ongoing monitoring and optimization to adapt to changing email landscape and provider policies.
