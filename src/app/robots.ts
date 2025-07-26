@@ -9,7 +9,10 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/_next/'],
       }
     ],
-    sitemap: 'https://sendincraft.com/sitemap.xml',
+    sitemap: [
+      'https://sendincraft.com/sitemap.xml',
+      'https://sendincraft.com/blog/rss.xml',
+    ],
     host: 'https://sendincraft.com',
   }
 }
