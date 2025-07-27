@@ -13,6 +13,5 @@ export default function robots(): MetadataRoute.Robots {
       'https://sendincraft.com/sitemap.xml',
       'https://sendincraft.com/blog/rss.xml',
     ],
-    host: 'https://sendincraft.com',
   }
 }
