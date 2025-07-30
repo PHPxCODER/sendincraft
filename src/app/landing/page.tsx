@@ -1,6 +1,7 @@
 import React from 'react';
 import HeroSection from '@/components/landing/HeroSection';
 import ProofSection from '@/components/landing/ProofSection';
+import LogoList from '@/components/landing/logo-list';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import PricingSection from '@/components/landing/PricingSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
@@ -12,6 +13,10 @@ const SendinCraftLanding = () => {
     <div className="min-h-screen bg-black text-white">
       {/* Navigation is already part of HeroSection */}
       <HeroSection />
+      <LogoList
+        className="border-smooth border-b"
+        title="Loved by developers from the world's leading organizations"
+      />
       <ProofSection />
       <FeaturesSection />
       <PricingSection />
