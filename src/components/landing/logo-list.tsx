@@ -23,8 +23,8 @@ const logos = [
         height: 17
     },
     {
-        src: '/trusted-by/tiktok.svg',
-        alt: 'TikTok',
+        src: '/trusted-by/hextasphere.svg',
+        alt: 'HextaSphere',
         width: 133,
         height: 32
     },
