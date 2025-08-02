@@ -39,6 +39,7 @@ export interface FooterLink {
   title: string;
   href: string;
   icon?: LucideIcon; // Optional icon for social links
+  external?: boolean;
 }
 
 export interface FooterSection {

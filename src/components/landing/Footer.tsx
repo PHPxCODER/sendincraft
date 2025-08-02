@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Send, Twitter, Linkedin, Github } from 'lucide-react';
+import { Send, Twitter, Linkedin, Github, ExternalLink } from 'lucide-react';
 import { FooterSection } from '@/lib/types'; // Import the type
 
 const Footer = () => {
@@ -11,9 +11,8 @@ const Footer = () => {
       label: 'Product',
       links: [
         { title: 'Features', href: '#features' },
-        { title: 'Pricing', href: '#pricing' },
-        { title: 'Documentation', href: '/docs' },
-        { title: 'API Reference', href: '/api' },
+        { title: 'Pricing', href: '/pricing' },
+        { title: 'Documentation', href: '/docs' }
       ],
     },
     {
@@ -21,15 +20,13 @@ const Footer = () => {
       links: [
         { title: 'About Us', href: '/about' },
         { title: 'Blog', href: '/blog' },
-        { title: 'Careers', href: '/careers' },
-        { title: 'Contact', href: '/contact' },
+        { title: 'Changelog', href: '/changelog' }
       ],
     },
     {
       label: 'Support',
       links: [
-        { title: 'Help Center', href: '/help' },
-        { title: 'Status', href: '/status' },
+        { title: 'Status', href: 'https://status.sendincraft.com', external: true },
         { title: 'Privacy Policy', href: '/privacy' },
         { title: 'Terms of Service', href: '/terms' },
       ],
@@ -37,9 +34,9 @@ const Footer = () => {
     {
       label: 'Social',
       links: [
-        { title: 'Twitter', href: '#', icon: Twitter },
-        { title: 'LinkedIn', href: '#', icon: Linkedin },
-        { title: 'GitHub', href: '#', icon: Github },
+        { title: 'Twitter', href: '#', icon: Twitter, external: true },
+        { title: 'LinkedIn', href: '#', icon: Linkedin, external: true },
+        { title: 'GitHub', href: '#', icon: Github, external: true },
       ],
     },
   ];
@@ -73,11 +70,18 @@ const Footer = () => {
                     <a
                       href={link.href}
                       className="inline-flex items-center text-gray-400 transition-all duration-300 hover:text-white"
+                      {...(link.external ? { 
+                        target: '_blank', 
+                        rel: 'noopener noreferrer' 
+                      } : {})}
                     >
                       {'icon' in link && link.icon && (
                         <link.icon className="me-1 size-4" />
                       )}
                       {link.title}
+                      {link.external && (
+                        <ExternalLink className="ml-1 size-3 opacity-60" />
+                      )}
                     </a>
                   </li>
                 ))}
