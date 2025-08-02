@@ -95,52 +95,52 @@ const Navigation = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border/50 md:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute top-16 left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border shadow-lg md:hidden"
           >
-            <div className="container mx-auto px-4 py-6">
-              <div className="flex flex-col space-y-4">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex flex-col space-y-1">
                 <Link 
                   href="#features" 
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200 py-2"
+                  className="flex items-center px-3 py-3 text-base font-medium text-foreground hover:bg-muted/50 hover:text-primary rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Features
                 </Link>
                 <Link 
-                  href="#pricing" 
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200 py-2"
+                  href="/pricing" 
+                  className="flex items-center px-3 py-3 text-base font-medium text-foreground hover:bg-muted/50 hover:text-primary rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Pricing
                 </Link>
                 <Link 
-                  href="#testimonials" 
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200 py-2"
+                  href="/changelog" 
+                  className="flex items-center px-3 py-3 text-base font-medium text-foreground hover:bg-muted/50 hover:text-primary rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Testimonials
+                  Changelog
                 </Link>
                 <Link 
-                  href="#faq" 
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200 py-2"
+                  href="/blog" 
+                  className="flex items-center px-3 py-3 text-base font-medium text-foreground hover:bg-muted/50 hover:text-primary rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  FAQ
+                  Blog
                 </Link>
                 <Link 
                   href="/docs" 
-                  className="text-lg text-foreground hover:text-primary transition-colors duration-200 py-2"
+                  className="flex items-center px-3 py-3 text-base font-medium text-foreground hover:bg-muted/50 hover:text-primary rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Documentation
+                  Docs
                 </Link>
-                <div className="pt-4 border-t border-border/30">
-                  <Link href="/#waitlist" onClick={() => setMobileMenuOpen(false)}>
-                    <button className="h-10 w-full rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors duration-200 shadow-sm">
+                <div className="pt-3 mt-2 border-t border-border/50">
+                  <Link href="/waitlist" onClick={() => setMobileMenuOpen(false)}>
+                    <button className="w-full h-12 rounded-lg bg-primary px-6 text-base font-semibold text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all duration-200 shadow-md">
                       Get Started
                     </button>
                   </Link>
