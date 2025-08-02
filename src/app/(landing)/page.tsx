@@ -1,5 +1,4 @@
 import React from 'react';
-import Navigation from '@/components/landing/Navigation';
 import HeroSection from '@/components/landing/HeroSection';
 import Platforms from '@/components/platforms';
 import ProofSection from '@/components/landing/ProofSection';
@@ -7,13 +6,12 @@ import LogoList from '@/components/landing/logo-list';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import FAQSection from '@/components/landing/FAQSection';
-import Footer from '@/components/landing/Footer';
 
 const SendinCraftLanding = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Sticky Navigation */}
-      <Navigation />
+      {/* <Navigation /> */}
       
       {/* Hero Section with proper background theming */}
       <div className="bg-gradient-to-br from-background via-background to-muted/20">
@@ -55,7 +53,7 @@ const SendinCraftLanding = () => {
       
       {/* Footer */}
       <div className="bg-gradient-to-t from-muted/20 to-background border-t border-border/30">
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );

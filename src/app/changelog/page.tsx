@@ -1,3 +1,4 @@
+import Navigation from "@/components/landing/Navigation"
 import { docs, meta } from "../../../.source"
 import { loader } from "fumadocs-core/source"
 import { createMDXSource } from "fumadocs-mdx"
@@ -33,18 +34,20 @@ export default function HomePage() {
   }, [])
 
   return (
+    
     <div className="min-h-screen bg-background relative">
-      {/* Header */}
-      <div className="border-b border-border/50">
+      <Navigation/>
+      {/* Header - Added proper spacing for navigation */}
+      <div className="border-b border-border/50 pt-20 md:pt-24">
         <div className="max-w-5xl mx-auto relative">
-          <div className="p-3 flex items-center justify-between">
+          <div className="p-6 flex items-center justify-between">
             <h1 className="text-3xl font-semibold tracking-tight">Changelog</h1>
           </div>
         </div>
       </div>
 
       {/* Timeline */}
-      <div className="max-w-5xl mx-auto px-6 lg:px-10 pt-10">
+      <div className="max-w-5xl mx-auto px-6 lg:px-10 pt-10 pb-20">
         <div className="relative">
           {sortedChangelogs.map((changelog) => {
             const MDX = changelog.data.body
@@ -55,7 +58,7 @@ export default function HomePage() {
               <div key={changelog.url} className="relative">
                 <div className="flex flex-col md:flex-row gap-y-6">
                   <div className="md:w-48 flex-shrink-0">
-                    <div className="md:sticky md:top-8 pb-10">
+                    <div className="md:sticky md:top-32 pb-10">
                       <time className="text-sm font-medium text-muted-foreground block mb-3">
                         {formattedDate}
                       </time>

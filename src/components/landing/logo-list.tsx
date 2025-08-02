@@ -18,7 +18,7 @@ const logos = [
     },
     {
         src: '/trusted-by/writers.png',
-        alt: 'ORACLE',
+        alt: 'VizagWriters',
         width: 136,
         height: 17
     },

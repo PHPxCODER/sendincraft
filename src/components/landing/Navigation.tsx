@@ -19,15 +19,12 @@ const Navigation = () => {
   }, []);
 
   return (
-    <motion.nav 
+    <div 
       className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
         isScrolled 
           ? 'bg-background/60 backdrop-blur-md border-b border-border/50 shadow-sm' 
           : 'bg-transparent'
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <div className="container mx-auto flex items-center justify-between px-4 h-full">
         <Link href="/" className="flex items-center group">
@@ -150,7 +147,7 @@ const Navigation = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </div>
   );
 };
 
