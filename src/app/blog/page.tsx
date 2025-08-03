@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { blog } from '@/lib/source';
 import { Calendar, Clock, ArrowRight, User, Rss } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
-import BlogSearch from './BlogSearch';
+import BlogSearch from '@/components/blog/BlogSearch';
 
 export const metadata: Metadata = {
   title: 'Blog | SendinCraft - Email Development Insights & Best Practices',

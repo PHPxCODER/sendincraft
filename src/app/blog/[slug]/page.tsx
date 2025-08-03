@@ -9,9 +9,9 @@ import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ScrollProgress } from '@/components/magicui/scroll-progress';
-import SocialShare from '../SocialShare';
-import StickyHeader from '../StickyHeader';
-import BlogBreadcrumb from '../BlogBreadcrumb';
+import SocialShare from '@/components/blog/SocialShare';
+import StickyHeader from '@/components/blog/StickyHeader';
+import BlogBreadcrumb from '@/components/blog/BlogBreadcrumb';
 
 // Utility function to estimate reading time
 function estimateReadingTime(content: string): number {
