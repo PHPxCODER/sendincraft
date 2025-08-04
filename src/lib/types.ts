@@ -1,4 +1,3 @@
-// types.ts
 import { LucideIcon } from 'lucide-react';
 
 export interface PricingTier {
