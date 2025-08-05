@@ -34,9 +34,9 @@ const Footer = () => {
     {
       label: 'Social',
       links: [
-        { title: 'Twitter', href: '#', icon: Twitter, external: true },
-        { title: 'LinkedIn', href: '#', icon: Linkedin, external: true },
-        { title: 'GitHub', href: '#', icon: Github, external: true },
+        { title: 'Twitter', href: 'https://x.com/sendincraft', icon: Twitter, external: true },
+        { title: 'LinkedIn', href: 'https://linkedin.com/company/rdp-datacenter', icon: Linkedin, external: true },
+        { title: 'GitHub', href: 'https://github.com/sendincraft', icon: Github, external: true },
       ],
     },
   ];
