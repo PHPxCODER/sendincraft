@@ -20,12 +20,13 @@ const Navigation = () => {
 
   return (
     <div 
-      className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-background/60 backdrop-blur-md border-b border-border/50 shadow-sm' 
+          ? 'bg-background/60 backdrop-blur-md shadow-sm' 
           : 'bg-transparent'
       }`}
     >
+    <div className="h-14">
       <div className="container mx-auto flex items-center justify-between px-4 h-full">
         <Link href="/" className="flex items-center group">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm group-hover:bg-primary/90 transition-colors duration-200">
@@ -87,7 +88,13 @@ const Navigation = () => {
             <Menu className="h-6 w-6 text-foreground" />
           )}
         </button>
+        </div>
       </div>
+
+      {/* Gradient line - only show when scrolled */}
+      {isScrolled && (
+        <hr className="m-0 h-px w-full border-none bg-gradient-to-r from-neutral-200/0 via-neutral-200/30 to-neutral-200/0" />
+      )}
 
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -96,7 +103,7 @@ const Navigation = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="absolute top-16 left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border shadow-lg md:hidden"
+            className="absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border shadow-lg md:hidden"
           >
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col space-y-1">
