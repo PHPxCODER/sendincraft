@@ -37,10 +37,10 @@ const Navigation = () => {
         <div className="hidden items-center space-x-6 md:flex">
           <div className="flex items-center space-x-6">
             <Link
-              href="#features"
+              href="/about"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
-              Features
+              About
             </Link>
             <Link
               href="/pricing"
