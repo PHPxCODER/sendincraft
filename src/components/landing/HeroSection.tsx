@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import Terminal from './Terminal';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { TextEffect } from '@/components/ui/text-effect';
@@ -37,16 +38,16 @@ const HeroSection = () => {
         {/* Remove Navigation from here since it's now sticky */}
 
         <AnimatedGroup variants={{ item: itemVariants }}>
-          <div className="mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-muted/30 dark:bg-muted/20 backdrop-blur-sm border border-border/50 px-4 py-2">
+          <Link href="/waitlist" className="group mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-muted/30 dark:bg-muted/20 backdrop-blur-sm border border-border/50 px-4 py-2 hover:bg-muted/50 transition-colors duration-200">
             <TextEffect
               as="span"
-              className="text-sm font-medium text-muted-foreground"
+              className="text-sm font-medium text-muted-foreground group-hover:text-white transition-colors duration-200"
               preset="fade"
             >
               Developer-First Email Platform
             </TextEffect>
-            <ArrowRight className="h-4 w-4 text-primary" />
-          </div>
+            <ArrowRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform duration-200" />
+          </Link>
 
           <div className="container mx-auto mt-12 px-4 text-center">
             {/* Main heading optimized for SendinCraft */}
