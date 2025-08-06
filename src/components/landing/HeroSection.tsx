@@ -29,6 +29,7 @@ const HeroSection = () => {
   return (
     <BeamsBackground 
       intensity="medium" 
+      staticOnMobile={true} //default is true, set to false for dynamic beams
       className="relative min-h-screen overflow-hidden pt-20"
     >
       <div className="relative z-10">

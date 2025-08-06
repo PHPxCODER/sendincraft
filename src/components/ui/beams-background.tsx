@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +7,7 @@ interface AnimatedGradientBackgroundProps {
     className?: string;
     children?: React.ReactNode;
     intensity?: "subtle" | "medium" | "strong";
+    staticOnMobile?: boolean; // New prop
 }
 
 interface Beam {
@@ -44,13 +45,17 @@ function createBeam(width: number, height: number, isDarkMode: boolean): Beam {
 export default function BeamsBackground({
     className,
     intensity = "strong",
+    staticOnMobile = true, // Default to static on mobile
     children,
 }: AnimatedGradientBackgroundProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const staticCanvasRef = useRef<HTMLCanvasElement>(null);
     const beamsRef = useRef<Beam[]>([]);
     const animationFrameRef = useRef<number>(0);
     const MINIMUM_BEAMS = 20;
     const isDarkModeRef = useRef<boolean>(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [staticImageReady, setStaticImageReady] = useState(false);
 
     const opacityMap = {
         subtle: 0.7,
@@ -58,7 +63,122 @@ export default function BeamsBackground({
         strong: 1,
     };
 
+    // Mobile gets 100% opacity regardless of intensity setting
+    const getMobileOpacityMap = () => ({
+        subtle: 1,
+        medium: 1,
+        strong: 1,
+    });
+
+    // Check if device is mobile
     useEffect(() => {
+        const checkIsMobile = () => {
+            setIsMobile(window.innerWidth < 768); // md breakpoint
+        };
+
+        checkIsMobile();
+        window.addEventListener("resize", checkIsMobile);
+
+        return () => window.removeEventListener("resize", checkIsMobile);
+    }, []);
+
+    // Generate static image for mobile
+    const generateStaticImage = () => {
+        const staticCanvas = staticCanvasRef.current;
+        if (!staticCanvas) return;
+
+        const ctx = staticCanvas.getContext("2d");
+        if (!ctx) return;
+
+        staticCanvas.width = window.innerWidth;
+        staticCanvas.height = window.innerHeight;
+        staticCanvas.style.width = `${window.innerWidth}px`;
+        staticCanvas.style.height = `${window.innerHeight}px`;
+
+        // Create static beams
+        const totalBeams = MINIMUM_BEAMS;
+        const staticBeams = Array.from({ length: totalBeams }, () =>
+            createBeam(staticCanvas.width, staticCanvas.height, isDarkModeRef.current)
+        );
+
+        ctx.clearRect(0, 0, staticCanvas.width, staticCanvas.height);
+        ctx.filter = "blur(35px)";
+
+        staticBeams.forEach((beam) => {
+            drawBeam(ctx, beam, true); // Pass true for mobile to get 100% opacity
+        });
+
+        setStaticImageReady(true);
+    };
+
+    // Draw beam function (same as original but with mobile opacity support)
+    function drawBeam(ctx: CanvasRenderingContext2D, beam: Beam, forMobile = false) {
+        ctx.save();
+        ctx.translate(beam.x, beam.y);
+        ctx.rotate((beam.angle * Math.PI) / 180);
+
+        // Use 100% opacity for mobile, original opacity map for desktop
+        const currentOpacityMap = forMobile ? getMobileOpacityMap() : opacityMap;
+        
+        const pulsingOpacity =
+            beam.opacity *
+            (0.8 + Math.sin(beam.pulse) * 0.2) *
+            currentOpacityMap[intensity];
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, beam.length);
+
+        const saturation = isDarkModeRef.current ? "85%" : "75%";
+        const lightness = isDarkModeRef.current ? "65%" : "45%";
+
+        gradient.addColorStop(
+            0,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
+        );
+        gradient.addColorStop(
+            0.1,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
+                pulsingOpacity * 0.5
+            })`
+        );
+        gradient.addColorStop(
+            0.4,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
+        );
+        gradient.addColorStop(
+            0.6,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
+        );
+        gradient.addColorStop(
+            0.9,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
+                pulsingOpacity * 0.5
+            })`
+        );
+        gradient.addColorStop(
+            1,
+            `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
+        );
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
+        ctx.restore();
+    }
+
+    useEffect(() => {
+        // If mobile and static mode is enabled, generate static image
+        if (isMobile && staticOnMobile) {
+            // Update dark mode for static image
+            const updateDarkMode = () => {
+                isDarkModeRef.current =
+                    document.documentElement.classList.contains("dark");
+            };
+            updateDarkMode();
+            
+            generateStaticImage();
+            return; // Don't start animation on mobile
+        }
+
+        // Original animation logic for desktop
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -117,55 +237,6 @@ export default function BeamsBackground({
             return beam;
         }
 
-        function drawBeam(ctx: CanvasRenderingContext2D, beam: Beam) {
-            ctx.save();
-            ctx.translate(beam.x, beam.y);
-            ctx.rotate((beam.angle * Math.PI) / 180);
-
-            const pulsingOpacity =
-                beam.opacity *
-                (0.8 + Math.sin(beam.pulse) * 0.2) *
-                opacityMap[intensity];
-
-            const gradient = ctx.createLinearGradient(0, 0, 0, beam.length);
-
-            const saturation = isDarkModeRef.current ? "85%" : "75%";
-            const lightness = isDarkModeRef.current ? "65%" : "45%";
-
-            gradient.addColorStop(
-                0,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
-            );
-            gradient.addColorStop(
-                0.1,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
-                    pulsingOpacity * 0.5
-                })`
-            );
-            gradient.addColorStop(
-                0.4,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
-            );
-            gradient.addColorStop(
-                0.6,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
-            );
-            gradient.addColorStop(
-                0.9,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
-                    pulsingOpacity * 0.5
-                })`
-            );
-            gradient.addColorStop(
-                1,
-                `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
-            );
-
-            ctx.fillStyle = gradient;
-            ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
-            ctx.restore();
-        }
-
         function animate() {
             if (!canvas || !ctx) return;
 
@@ -182,7 +253,7 @@ export default function BeamsBackground({
                     resetBeam(beam, index, totalBeams);
                 }
 
-                drawBeam(ctx, beam);
+                drawBeam(ctx, beam, false); // Pass false for desktop to use original opacity
             });
 
             animationFrameRef.current = requestAnimationFrame(animate);
@@ -198,7 +269,7 @@ export default function BeamsBackground({
             observer.disconnect();
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [intensity]);
+    }, [intensity, isMobile, staticOnMobile]);
 
     return (
         <div
@@ -207,11 +278,26 @@ export default function BeamsBackground({
                 className
             )}
         >
-            <canvas
-                ref={canvasRef}
-                className="absolute inset-0"
-                style={{ filter: "blur(15px)" }}
-            />
+            {/* Animated canvas for desktop */}
+            {(!isMobile || !staticOnMobile) && (
+                <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0"
+                    style={{ filter: "blur(15px)" }}
+                />
+            )}
+
+            {/* Static canvas for mobile */}
+            {isMobile && staticOnMobile && (
+                <canvas
+                    ref={staticCanvasRef}
+                    className={cn(
+                        "absolute inset-0 transition-opacity duration-500",
+                        staticImageReady ? "opacity-100" : "opacity-0"
+                    )}
+                    style={{ filter: "blur(15px)" }}
+                />
+            )}
 
             <motion.div
                 className="absolute inset-0 bg-neutral-900/5 dark:bg-neutral-950/5"
