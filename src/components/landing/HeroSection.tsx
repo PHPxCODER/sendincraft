@@ -5,6 +5,7 @@ import Terminal from './Terminal';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { TextEffect } from '@/components/ui/text-effect';
 import { Variants, Transition } from 'framer-motion';
+import BeamsBackground from "@/components/ui/beams-background";
 
 const itemVariants: Variants = {
   hidden: {
@@ -26,17 +27,11 @@ const itemVariants: Variants = {
 
 const HeroSection = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 pt-20">
-      {/* Background elements with proper theming */}
-      <div className="absolute -right-60 -top-10 z-0 flex flex-col items-end blur-xl opacity-60 dark:opacity-80">
-        <div className="z-1 h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-primary/30 to-secondary/30 blur-[6rem]"></div>
-        <div className="z-1 h-[10rem] w-[90rem] rounded-full bg-gradient-to-b from-purple-500/20 to-blue-500/20 blur-[6rem]"></div>
-        <div className="z-1 h-[10rem] w-[60rem] rounded-full bg-gradient-to-b from-blue-500/20 to-primary/30 blur-[6rem]"></div>
-      </div>
-
+    <BeamsBackground 
+      intensity="subtle" 
+      className="relative min-h-screen overflow-hidden pt-20"
+    >
       <div className="relative z-10">
-        {/* Remove Navigation from here since it's now sticky */}
-
         <AnimatedGroup variants={{ item: itemVariants }}>
           <Link href="/waitlist" className="group mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-muted/30 dark:bg-muted/20 backdrop-blur-sm border border-border/50 px-4 py-2 hover:bg-muted/50 transition-colors duration-200">
             <TextEffect
@@ -92,6 +87,7 @@ const HeroSection = () => {
               </p>
             </AnimatedGroup>
 
+            {/* CTA Buttons Section */}
             <AnimatedGroup
               variants={{
                 container: {
@@ -106,9 +102,12 @@ const HeroSection = () => {
               }}
               className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
             >
+              {/* Primary CTA - Main conversion goal */}
               <button className="h-12 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors duration-200 shadow-sm">
                 Start Free Trial
               </button>
+              
+              {/* Secondary CTA - Alternative action */}
               <button className="h-12 rounded-lg border border-border bg-background/50 backdrop-blur-sm px-8 text-base font-medium text-foreground hover:bg-muted/50 transition-colors duration-200">
                 View Documentation
               </button>
@@ -125,7 +124,7 @@ const HeroSection = () => {
           </AnimatedGroup>
         </AnimatedGroup>
       </div>
-    </div>
+    </BeamsBackground>
   );
 };
 
