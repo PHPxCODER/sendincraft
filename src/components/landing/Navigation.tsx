@@ -93,7 +93,7 @@ const Navigation = () => {
 
       {/* Gradient line - only show when scrolled */}
       {isScrolled && (
-        <hr className="m-0 h-px w-full border-none bg-gradient-to-r from-neutral-200/0 via-neutral-200/30 to-neutral-200/0" />
+        <hr className="m-0 h-px w-full border-none bg-gradient-to-r from-neutral-200/0 via-neutral-200/30 to-neutral-200/0 hidden sm:block" />
       )}
 
       <AnimatePresence>
