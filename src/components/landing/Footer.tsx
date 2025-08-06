@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Send, Twitter, Linkedin, Github, ExternalLink } from 'lucide-react';
 import { FooterSection } from '@/lib/types'; // Import the type
@@ -58,6 +59,25 @@ const Footer = () => {
           <p className="text-muted-foreground mt-8 text-sm md:mt-0">
             © {new Date().getFullYear()} SendinCraft. All rights reserved.
           </p>
+          
+          {/* Peerlist project link */}
+          <div className="mt-4">
+            <a 
+              href="https://peerlist.io/phpxcoder/project/sendincraft" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-block"
+            >
+              <Image
+                src="/peerlist.svg"
+                alt="SendinCraft on Peerlist"
+                width={200}
+                height={60}
+                className="h-auto w-32 transition-all duration-200 hover:scale-105 hover:opacity-90 sm:w-36 md:w-40 lg:w-44"
+                priority={false}
+              />
+            </a>
+          </div>
         </div>
 
         <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
@@ -90,6 +110,7 @@ const Footer = () => {
           ))}
         </div>
       </div>
+      
       {/* Branding with animation - Fixed positioning */}
       <div className="absolute bottom-4 left-0 right-0 z-10">
         <motion.div
