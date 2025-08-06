@@ -28,7 +28,7 @@ const itemVariants: Variants = {
 const HeroSection = () => {
   return (
     <BeamsBackground 
-      intensity="subtle" 
+      intensity="medium" 
       className="relative min-h-screen overflow-hidden pt-20"
     >
       <div className="relative z-10">
