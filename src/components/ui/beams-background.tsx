@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +50,7 @@ export default function BeamsBackground({
 }: AnimatedGradientBackgroundProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const staticCanvasRef = useRef<HTMLCanvasElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null); // NEW: Container ref
+    const containerRef = useRef<HTMLDivElement>(null);
     const beamsRef = useRef<Beam[]>([]);
     const animationFrameRef = useRef<number>(0);
     const MINIMUM_BEAMS = 20;
@@ -58,17 +58,19 @@ export default function BeamsBackground({
     const [isMobile, setIsMobile] = useState(false);
     const [staticImageReady, setStaticImageReady] = useState(false);
 
-    const opacityMap = {
+    // Wrap opacityMap with useMemo to prevent recreation on every render
+    const opacityMap = useMemo(() => ({
         subtle: 0.80,
         medium: 0.85,
         strong: 1,
-    };
+    }), []);
 
-    const getMobileOpacityMap = () => ({
+    // Wrap with useCallback to prevent recreation
+    const getMobileOpacityMap = useCallback(() => ({
         subtle: 1,
         medium: 1,
         strong: 1,
-    });
+    }), []);
 
     // Check if device is mobile
     useEffect(() => {
@@ -82,8 +84,8 @@ export default function BeamsBackground({
         return () => window.removeEventListener("resize", checkIsMobile);
     }, []);
 
-    // NEW: Get container dimensions instead of window dimensions
-    const getContainerDimensions = () => {
+    // Get container dimensions - wrapped with useCallback
+    const getContainerDimensions = useCallback(() => {
         if (containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
             return {
@@ -95,40 +97,10 @@ export default function BeamsBackground({
             width: window.innerWidth,
             height: window.innerHeight
         };
-    };
+    }, []);
 
-    // Generate static image for mobile
-    const generateStaticImage = () => {
-        const staticCanvas = staticCanvasRef.current;
-        if (!staticCanvas) return;
-
-        const ctx = staticCanvas.getContext("2d");
-        if (!ctx) return;
-
-        // NEW: Use container dimensions
-        const { width, height } = getContainerDimensions();
-        
-        staticCanvas.width = width;
-        staticCanvas.height = height;
-        staticCanvas.style.width = `${width}px`;
-        staticCanvas.style.height = `${height}px`;
-
-        const totalBeams = MINIMUM_BEAMS;
-        const staticBeams = Array.from({ length: totalBeams }, () =>
-            createBeam(width, height, isDarkModeRef.current)
-        );
-
-        ctx.clearRect(0, 0, width, height);
-        ctx.filter = "blur(35px)";
-
-        staticBeams.forEach((beam) => {
-            drawBeam(ctx, beam, true);
-        });
-
-        setStaticImageReady(true);
-    };
-
-    function drawBeam(ctx: CanvasRenderingContext2D, beam: Beam, forMobile = false) {
+    // Draw beam function - wrapped with useCallback
+    const drawBeam = useCallback((ctx: CanvasRenderingContext2D, beam: Beam, forMobile = false) => {
         ctx.save();
         ctx.translate(beam.x, beam.y);
         ctx.rotate((beam.angle * Math.PI) / 180);
@@ -155,7 +127,37 @@ export default function BeamsBackground({
         ctx.fillStyle = gradient;
         ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
         ctx.restore();
-    }
+    }, [intensity, opacityMap, getMobileOpacityMap]);
+
+    // Generate static image for mobile - wrapped with useCallback
+    const generateStaticImage = useCallback(() => {
+        const staticCanvas = staticCanvasRef.current;
+        if (!staticCanvas) return;
+
+        const ctx = staticCanvas.getContext("2d");
+        if (!ctx) return;
+
+        const { width, height } = getContainerDimensions();
+        
+        staticCanvas.width = width;
+        staticCanvas.height = height;
+        staticCanvas.style.width = `${width}px`;
+        staticCanvas.style.height = `${height}px`;
+
+        const totalBeams = MINIMUM_BEAMS;
+        const staticBeams = Array.from({ length: totalBeams }, () =>
+            createBeam(width, height, isDarkModeRef.current)
+        );
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.filter = "blur(35px)";
+
+        staticBeams.forEach((beam) => {
+            drawBeam(ctx, beam, true);
+        });
+
+        setStaticImageReady(true);
+    }, [getContainerDimensions, drawBeam]);
 
     useEffect(() => {
         // Update dark mode
@@ -183,7 +185,6 @@ export default function BeamsBackground({
         });
 
         const updateCanvasSize = () => {
-            // NEW: Use container dimensions
             const { width, height } = getContainerDimensions();
             
             const dpr = window.devicePixelRatio || 1;
@@ -251,11 +252,11 @@ export default function BeamsBackground({
             }
             observer.disconnect();
         };
-    }, [intensity, isMobile, staticOnMobile]);
+    }, [intensity, isMobile, staticOnMobile, drawBeam, generateStaticImage, getContainerDimensions]);
 
     return (
         <div
-            ref={containerRef} // NEW: Container ref
+            ref={containerRef}
             className={cn(
                 "relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-950",
                 className
