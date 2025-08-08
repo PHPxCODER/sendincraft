@@ -104,14 +104,18 @@ const HeroSection = () => {
               className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
             >
               {/* Primary CTA - Main conversion goal */}
+              <Link href="/waitlist">
               <button className="h-12 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors duration-200 shadow-sm">
-                Start Free Trial
+                Join Waitlist
               </button>
+              </Link>
               
               {/* Secondary CTA - Alternative action */}
+              <Link href="/docs">
               <button className="h-12 rounded-lg border border-border bg-background/50 backdrop-blur-sm px-8 text-base font-medium text-foreground hover:bg-muted/50 transition-colors duration-200">
                 View Documentation
               </button>
+              </Link>
             </AnimatedGroup>
           </div>
 
