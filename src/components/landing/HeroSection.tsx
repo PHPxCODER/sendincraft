@@ -5,7 +5,6 @@ import Terminal from './Terminal';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { TextEffect } from '@/components/ui/text-effect';
 import { Variants, Transition } from 'framer-motion';
-import BeamsBackground from "@/components/ui/beams-background";
 
 const itemVariants: Variants = {
   hidden: {
@@ -27,12 +26,7 @@ const itemVariants: Variants = {
 
 const HeroSection = () => {
   return (
-    <BeamsBackground 
-      intensity="medium" 
-      staticOnMobile={true} //default is true, set to false for dynamic beams
-      className="relative min-h-screen overflow-hidden pt-20"
-    >
-      <div className="relative z-10">
+    <>
         <AnimatedGroup variants={{ item: itemVariants }}>
           <Link href="/waitlist" className="group mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full bg-muted/30 dark:bg-muted/20 backdrop-blur-sm border border-border/50 px-4 py-2 hover:bg-muted/50 transition-colors duration-200">
             <TextEffect
@@ -128,8 +122,7 @@ const HeroSection = () => {
             <Terminal />
           </AnimatedGroup>
         </AnimatedGroup>
-      </div>
-    </BeamsBackground>
+    </>
   );
 };
 

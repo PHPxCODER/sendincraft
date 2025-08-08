@@ -6,17 +6,22 @@ import LogoList from '@/components/landing/logo-list';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
 import FAQSection from '@/components/landing/FAQSection';
+import BeamsBackground from "@/components/ui/beams-background";
 
 const SendinCraftLanding = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Sticky Navigation */}
-      {/* <Navigation /> */}
-      
+      {/* Hero Section with BeamsBackground */}
+      <BeamsBackground 
+        intensity="medium" 
+        staticOnMobile={true}
+        className="bg-gradient-to-br from-background via-background to-muted/20"
+      >
       {/* Hero Section with proper background theming */}
-      <div className="bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="min-h-screen pt-20 pb-20 sm:pb-24 md:pb-28 lg:pb-32">
         <HeroSection />
       </div>
+      </BeamsBackground>
       
       {/* Developer Platforms Section */}
       <div className="bg-background border-t border-border/50">

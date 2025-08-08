@@ -7,7 +7,7 @@ interface AnimatedGradientBackgroundProps {
     className?: string;
     children?: React.ReactNode;
     intensity?: "subtle" | "medium" | "strong";
-    staticOnMobile?: boolean; // New prop
+    staticOnMobile?: boolean;
 }
 
 interface Beam {
@@ -45,11 +45,12 @@ function createBeam(width: number, height: number, isDarkMode: boolean): Beam {
 export default function BeamsBackground({
     className,
     intensity = "strong",
-    staticOnMobile = true, // Default to static on mobile
+    staticOnMobile = true,
     children,
 }: AnimatedGradientBackgroundProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const staticCanvasRef = useRef<HTMLCanvasElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null); // NEW: Container ref
     const beamsRef = useRef<Beam[]>([]);
     const animationFrameRef = useRef<number>(0);
     const MINIMUM_BEAMS = 20;
@@ -58,12 +59,11 @@ export default function BeamsBackground({
     const [staticImageReady, setStaticImageReady] = useState(false);
 
     const opacityMap = {
-        subtle: 0.7,
+        subtle: 0.80,
         medium: 0.85,
         strong: 1,
     };
 
-    // Mobile gets 100% opacity regardless of intensity setting
     const getMobileOpacityMap = () => ({
         subtle: 1,
         medium: 1,
@@ -73,7 +73,7 @@ export default function BeamsBackground({
     // Check if device is mobile
     useEffect(() => {
         const checkIsMobile = () => {
-            setIsMobile(window.innerWidth < 768); // md breakpoint
+            setIsMobile(window.innerWidth < 768);
         };
 
         checkIsMobile();
@@ -81,6 +81,21 @@ export default function BeamsBackground({
 
         return () => window.removeEventListener("resize", checkIsMobile);
     }, []);
+
+    // NEW: Get container dimensions instead of window dimensions
+    const getContainerDimensions = () => {
+        if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            return {
+                width: rect.width || window.innerWidth,
+                height: rect.height || window.innerHeight
+            };
+        }
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    };
 
     // Generate static image for mobile
     const generateStaticImage = () => {
@@ -90,34 +105,34 @@ export default function BeamsBackground({
         const ctx = staticCanvas.getContext("2d");
         if (!ctx) return;
 
-        staticCanvas.width = window.innerWidth;
-        staticCanvas.height = window.innerHeight;
-        staticCanvas.style.width = `${window.innerWidth}px`;
-        staticCanvas.style.height = `${window.innerHeight}px`;
+        // NEW: Use container dimensions
+        const { width, height } = getContainerDimensions();
+        
+        staticCanvas.width = width;
+        staticCanvas.height = height;
+        staticCanvas.style.width = `${width}px`;
+        staticCanvas.style.height = `${height}px`;
 
-        // Create static beams
         const totalBeams = MINIMUM_BEAMS;
         const staticBeams = Array.from({ length: totalBeams }, () =>
-            createBeam(staticCanvas.width, staticCanvas.height, isDarkModeRef.current)
+            createBeam(width, height, isDarkModeRef.current)
         );
 
-        ctx.clearRect(0, 0, staticCanvas.width, staticCanvas.height);
+        ctx.clearRect(0, 0, width, height);
         ctx.filter = "blur(35px)";
 
         staticBeams.forEach((beam) => {
-            drawBeam(ctx, beam, true); // Pass true for mobile to get 100% opacity
+            drawBeam(ctx, beam, true);
         });
 
         setStaticImageReady(true);
     };
 
-    // Draw beam function (same as original but with mobile opacity support)
     function drawBeam(ctx: CanvasRenderingContext2D, beam: Beam, forMobile = false) {
         ctx.save();
         ctx.translate(beam.x, beam.y);
         ctx.rotate((beam.angle * Math.PI) / 180);
 
-        // Use 100% opacity for mobile, original opacity map for desktop
         const currentOpacityMap = forMobile ? getMobileOpacityMap() : opacityMap;
         
         const pulsingOpacity =
@@ -130,34 +145,12 @@ export default function BeamsBackground({
         const saturation = isDarkModeRef.current ? "85%" : "75%";
         const lightness = isDarkModeRef.current ? "65%" : "45%";
 
-        gradient.addColorStop(
-            0,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
-        );
-        gradient.addColorStop(
-            0.1,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
-                pulsingOpacity * 0.5
-            })`
-        );
-        gradient.addColorStop(
-            0.4,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
-        );
-        gradient.addColorStop(
-            0.6,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`
-        );
-        gradient.addColorStop(
-            0.9,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, ${
-                pulsingOpacity * 0.5
-            })`
-        );
-        gradient.addColorStop(
-            1,
-            `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`
-        );
+        gradient.addColorStop(0, `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`);
+        gradient.addColorStop(0.1, `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity * 0.5})`);
+        gradient.addColorStop(0.4, `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`);
+        gradient.addColorStop(0.6, `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity})`);
+        gradient.addColorStop(0.9, `hsla(${beam.hue}, ${saturation}, ${lightness}, ${pulsingOpacity * 0.5})`);
+        gradient.addColorStop(1, `hsla(${beam.hue}, ${saturation}, ${lightness}, 0)`);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(-beam.width / 2, 0, beam.width, beam.length);
@@ -165,31 +158,23 @@ export default function BeamsBackground({
     }
 
     useEffect(() => {
-        // If mobile and static mode is enabled, generate static image
+        // Update dark mode
+        const updateDarkMode = () => {
+            isDarkModeRef.current = document.documentElement.classList.contains("dark");
+        };
+        updateDarkMode();
+
         if (isMobile && staticOnMobile) {
-            // Update dark mode for static image
-            const updateDarkMode = () => {
-                isDarkModeRef.current =
-                    document.documentElement.classList.contains("dark");
-            };
-            updateDarkMode();
-            
-            generateStaticImage();
-            return; // Don't start animation on mobile
+            // Wait a bit for container to have proper dimensions
+            const timer = setTimeout(generateStaticImage, 100);
+            return () => clearTimeout(timer);
         }
 
-        // Original animation logic for desktop
         const canvas = canvasRef.current;
         if (!canvas) return;
 
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
-
-        // Check for dark mode
-        const updateDarkMode = () => {
-            isDarkModeRef.current =
-                document.documentElement.classList.contains("dark");
-        };
 
         const observer = new MutationObserver(updateDarkMode);
         observer.observe(document.documentElement, {
@@ -197,19 +182,20 @@ export default function BeamsBackground({
             attributeFilter: ["class"],
         });
 
-        updateDarkMode();
-
         const updateCanvasSize = () => {
+            // NEW: Use container dimensions
+            const { width, height } = getContainerDimensions();
+            
             const dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
-            canvas.style.width = `${window.innerWidth}px`;
-            canvas.style.height = `${window.innerHeight}px`;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
             ctx.scale(dpr, dpr);
 
             const totalBeams = MINIMUM_BEAMS * 1.5;
             beamsRef.current = Array.from({ length: totalBeams }, () =>
-                createBeam(canvas.width, canvas.height, isDarkModeRef.current)
+                createBeam(width, height, isDarkModeRef.current)
             );
         };
 
@@ -217,19 +203,16 @@ export default function BeamsBackground({
         window.addEventListener("resize", updateCanvasSize);
 
         function resetBeam(beam: Beam, index: number, totalBeams: number) {
-            if (!canvas) return beam;
-
+            const { width, height } = getContainerDimensions();
+            
             const column = index % 3;
-            const spacing = canvas.width / 3;
+            const spacing = width / 3;
 
             const hueBase = isDarkModeRef.current ? 190 : 210;
             const hueRange = isDarkModeRef.current ? 70 : 50;
 
-            beam.y = canvas.height + 100;
-            beam.x =
-                column * spacing +
-                spacing / 2 +
-                (Math.random() - 0.5) * spacing * 0.5;
+            beam.y = height + 100;
+            beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
             beam.width = 100 + Math.random() * 100;
             beam.speed = 0.5 + Math.random() * 0.4;
             beam.hue = hueBase + (index * hueRange) / totalBeams;
@@ -240,7 +223,8 @@ export default function BeamsBackground({
         function animate() {
             if (!canvas || !ctx) return;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const { width, height } = getContainerDimensions();
+            ctx.clearRect(0, 0, width, height);
             ctx.filter = "blur(35px)";
 
             const totalBeams = beamsRef.current.length;
@@ -248,12 +232,11 @@ export default function BeamsBackground({
                 beam.y -= beam.speed;
                 beam.pulse += beam.pulseSpeed;
 
-                // Reset beam when it goes off screen
                 if (beam.y + beam.length < -100) {
                     resetBeam(beam, index, totalBeams);
                 }
 
-                drawBeam(ctx, beam, false); // Pass false for desktop to use original opacity
+                drawBeam(ctx, beam, false);
             });
 
             animationFrameRef.current = requestAnimationFrame(animate);
@@ -268,17 +251,16 @@ export default function BeamsBackground({
             }
             observer.disconnect();
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [intensity, isMobile, staticOnMobile]);
 
     return (
         <div
+            ref={containerRef} // NEW: Container ref
             className={cn(
                 "relative w-full overflow-hidden bg-neutral-100 dark:bg-neutral-950",
                 className
             )}
         >
-            {/* Animated canvas for desktop */}
             {(!isMobile || !staticOnMobile) && (
                 <canvas
                     ref={canvasRef}
@@ -287,7 +269,6 @@ export default function BeamsBackground({
                 />
             )}
 
-            {/* Static canvas for mobile */}
             {isMobile && staticOnMobile && (
                 <canvas
                     ref={staticCanvasRef}
