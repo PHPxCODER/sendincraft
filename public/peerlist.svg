@@ -46,7 +46,7 @@
         <rect x="240.127" y="9.5" width="47" height="53" rx="11.5" fill="#333"/>
         <rect x="240.127" y="9.5" width="47" height="53" rx="11.5" stroke="#404040" fill="none"/>
         <path d="M263.628 34.4987H262.163C261.401 34.4987 260.121 34.5811 260.121 33.4519V28.1751C260.121 27.8013 259.89 27.5451 259.455 27.5451H256.577C255.706 27.5451 256.314 26.8587 256.622 26.5645C256.93 26.2702 259.651 23.4223 259.651 23.4223C259.651 23.4223 262.833 20.0914 263.184 19.7563C263.535 19.4212 263.705 19.408 264.07 19.7563C264.435 20.1045 267.603 23.4223 267.603 23.4223C267.603 23.4223 270.323 26.2702 270.632 26.5645C270.94 26.8587 271.548 27.5451 270.677 27.5451H267.799C267.364 27.5451 267.133 27.8013 267.133 28.1751V33.4519C267.133 34.5811 265.853 34.4987 265.091 34.4987H263.628Z" stroke="#FFF" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <text fill="#FFF" xml:space="preserve" text-anchor="middle" style="white-space: pre" font-family="Geist, system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="263.627" y="53.2">15</tspan></text>
+        <text fill="#FFF" xml:space="preserve" text-anchor="middle" style="white-space: pre" font-family="Geist, system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="263.627" y="53.2">18</tspan></text>
     
 				<defs>
 					<filter id="filter0_f_32259_213108" x="76.3576" y="13.4358" width="57.9346" height="18.066" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
