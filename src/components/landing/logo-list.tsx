@@ -17,7 +17,7 @@ const logos = [
         height: 42
     },
     {
-        src: '/trusted-by/writers.png',
+        src: '/trusted-by/writers.svg',
         alt: 'VizagWriters',
         width: 136,
         height: 17
