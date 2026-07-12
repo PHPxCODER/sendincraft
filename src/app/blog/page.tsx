@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import { blog } from '@/lib/source';
 import { Clock, ArrowRight, Rss, FileText } from 'lucide-react';
 import BlogSearch from '@/components/blog/BlogSearch';
+import Navigation from '@/components/landing/Navigation';
+import Footer from '@/components/landing/Footer';
 
 export const metadata: Metadata = {
   title: 'Blog | SendinCraft - Email Development Insights & Best Practices',
@@ -86,6 +88,8 @@ export default function BlogPage() {
         title="SendinCraft Blog RSS"
         href="https://sendincraft.com/blog/rss.xml"
       />
+
+      <Navigation />
 
       <main className="bg-background">
         {/* Header */}
@@ -216,6 +220,8 @@ export default function BlogPage() {
           </div>
         </section>
       </main>
+
+      <Footer />
     </>
   );
 }
