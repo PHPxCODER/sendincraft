@@ -30,6 +30,7 @@ const Footer = () => {
         { title: 'Status', href: 'https://status.sendincraft.com', external: true },
         { title: 'Privacy Policy', href: '/privacy' },
         { title: 'Terms of Service', href: '/terms' },
+        { title: 'Acceptable Use', href: '/acceptable-use' },
       ],
     },
     {
