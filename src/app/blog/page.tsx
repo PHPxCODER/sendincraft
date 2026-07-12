@@ -163,14 +163,15 @@ export default function BlogPage() {
 
         {/* Subscribe CTA */}
         <section className="mx-auto max-w-6xl px-6 pb-24">
-          <div className="relative overflow-hidden rounded-2xl bg-foreground px-8 py-12 text-background sm:px-12 sm:py-16">
+          {/* Fixed dark panel: stays dark in both light and dark themes (intentional color block) */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-950 px-8 py-12 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ring-1 ring-white/10 sm:px-12 sm:py-16">
             {/* Grid lines, fading outward */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
                 backgroundImage:
-                  'linear-gradient(color-mix(in oklab, var(--background) 7%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--background) 7%, transparent) 1px, transparent 1px)',
+                  'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)',
                 backgroundSize: '46px 46px',
                 maskImage: 'radial-gradient(ellipse 85% 120% at 90% 0%, black, transparent 72%)',
                 WebkitMaskImage: 'radial-gradient(ellipse 85% 120% at 90% 0%, black, transparent 72%)',
@@ -182,26 +183,26 @@ export default function BlogPage() {
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  'radial-gradient(ellipse 55% 80% at 100% 0%, color-mix(in oklab, var(--background) 12%, transparent), transparent 60%)',
+                  'radial-gradient(ellipse 55% 80% at 100% 0%, rgba(255,255,255,0.10), transparent 60%)',
               }}
             />
             {/* Soft glow for depth */}
             <div
               aria-hidden
-              className="pointer-events-none absolute -bottom-24 left-1/4 h-48 w-48 rounded-full bg-background/[0.06] blur-3xl"
+              className="pointer-events-none absolute -bottom-24 left-1/4 h-48 w-48 rounded-full bg-white/[0.06] blur-3xl"
             />
             <div className="relative max-w-xl">
               <h2 className="font-raleway text-2xl font-bold tracking-tight sm:text-3xl">
                 Ship email that reaches the inbox
               </h2>
-              <p className="mt-3 max-w-lg text-background/70">
+              <p className="mt-3 max-w-lg text-zinc-400">
                 Get new guides on deliverability, security, and email infrastructure as we publish them, and
                 early access to the platform.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/waitlist"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-background px-6 text-sm font-semibold text-foreground transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-white px-6 text-sm font-semibold text-zinc-950 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
                 >
                   Join the waitlist
                   <ArrowRight className="h-4 w-4" strokeWidth={2} />
@@ -210,7 +211,7 @@ export default function BlogPage() {
                   href="/blog/rss.xml"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-background/25 px-6 text-sm font-medium text-background transition-colors duration-200 hover:bg-background/10"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-white/20 px-6 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10"
                 >
                   <Rss className="h-4 w-4" strokeWidth={2} />
                   RSS feed
