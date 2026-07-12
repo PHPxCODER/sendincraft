@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { blog } from '@/lib/source';
-import { Calendar, Clock, ArrowRight, User, Rss } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { Clock, ArrowRight, Rss, FileText } from 'lucide-react';
 import BlogSearch from '@/components/blog/BlogSearch';
 
 export const metadata: Metadata = {
@@ -61,226 +60,157 @@ export default function BlogPage() {
   const posts = blog.getPages();
 
   // Sort posts by date (newest first)
-  const sortedPosts = posts.sort((a, b) => {
+  const sortedPosts = [...posts].sort((a, b) => {
     const dateA = new Date(a.data.date).getTime();
     const dateB = new Date(b.data.date).getTime();
     return dateB - dateA;
   });
 
-  // Get the featured post (most recent)
-  const featuredPost = sortedPosts[0];
-
-  // Serialize posts for client component - extract only the data we need
-  const serializedPosts = sortedPosts.map(post => ({
+  // Serialize posts for the client component - only the data we need
+  const serializedPosts = sortedPosts.map((post) => ({
     url: post.url,
     data: {
       title: post.data.title,
       description: post.data.description || undefined,
       author: post.data.author,
-      date: new Date(post.data.date).toISOString(), // Convert to string
-    }
+      date: new Date(post.data.date).toISOString(),
+    },
   }));
 
   return (
     <>
       {/* RSS Discovery Meta Tag */}
-      <link 
-        rel="alternate" 
-        type="application/rss+xml" 
-        title="SendinCraft Blog RSS" 
-        href="https://sendincraft.com/blog/rss.xml" 
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="SendinCraft Blog RSS"
+        href="https://sendincraft.com/blog/rss.xml"
       />
-      
-      <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-        {/* Hero Section */}
-        <section className="relative py-16 sm:py-24">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/10" />
-          <div className="container mx-auto px-4 relative">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                Email Development
-                <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent block">
-                  Insights & Best Practices
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-                Discover the latest insights, tutorials, and best practices for building reliable 
-                transactional email systems. From security to deliverability, we cover it all.
+
+      <main className="bg-background">
+        {/* Header */}
+        <header className="relative overflow-hidden border-b border-border/60">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 [background-image:radial-gradient(var(--border)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_70%_90%_at_50%_-10%,black,transparent)]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-56 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-foreground/[0.04] blur-3xl"
+          />
+
+          <div className="mx-auto max-w-6xl px-6 pb-14 pt-24 sm:pt-28">
+            <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
+              <Link href="/" className="transition-colors hover:text-foreground">
+                Home
+              </Link>
+              <span aria-hidden className="text-muted-foreground/40">
+                /
+              </span>
+              <span className="text-foreground">Blog</span>
+            </nav>
+
+            <h1 className="max-w-3xl font-raleway text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              Email development, from the source
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Practical guides on deliverability, authentication, and building transactional email that
+              actually reaches the inbox.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground">
+                <FileText className="h-3.5 w-3.5" strokeWidth={2} />
+                {posts.length} {posts.length === 1 ? 'article' : 'articles'}
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground">
+                <Clock className="h-3.5 w-3.5" strokeWidth={2} />
+                Updated weekly
+              </span>
+              <Link
+                href="/blog/rss.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+              >
+                <Rss className="h-3.5 w-3.5" strokeWidth={2} />
+                RSS
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* Articles */}
+        <section className="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+          {posts.length > 0 ? (
+            <BlogSearch posts={serializedPosts} />
+          ) : (
+            <div className="rounded-2xl border border-dashed border-border py-20 text-center">
+              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                <FileText className="h-7 w-7 text-muted-foreground" strokeWidth={2} />
+              </div>
+              <h2 className="mb-2 font-raleway text-2xl font-semibold text-foreground">No posts yet</h2>
+              <p className="mx-auto max-w-md text-muted-foreground">
+                We&apos;re working on bringing you in-depth email engineering guides. Check back soon.
               </p>
-              
-              {/* Blog Stats */}
-              <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span>{posts.length} Articles</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>Updated Weekly</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Link 
-                    href="/blog/rss.xml" 
-                    className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Rss className="w-4 h-4" />
-                    <span>RSS Feed</span>
-                  </Link>
-                </div>
-              </div>
             </div>
-          </div>
+          )}
         </section>
 
-        {/* Featured Post */}
-        {featuredPost && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <div className="mb-8">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full border border-primary/20">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                    Featured Article
-                  </div>
-                </div>
-                
-                <Link href={featuredPost.url} className="group block">
-                  <article className="relative overflow-hidden rounded-2xl bg-card border border-border/50 hover:border-border transition-all duration-300 hover:shadow-xl">
-                    {/* Featured Post Content */}
-                    <div className="p-8 sm:p-12">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4" />
-                            <span className="font-medium">{featuredPost.data.author}</span>
-                          </div>
-                          <div className="w-1 h-1 bg-muted-foreground rounded-full" />
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            <time dateTime={featuredPost.data.date.toString()}>
-                              {formatDate(new Date(featuredPost.data.date))}
-                            </time>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 line-clamp-2">
-                        {featuredPost.data.title}
-                      </h2>
-                      
-                      {featuredPost.data.description && (
-                        <p className="text-lg text-muted-foreground mb-6 line-clamp-3 leading-relaxed">
-                          {featuredPost.data.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all duration-300">
-                        <span>Read full article</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                      </div>
-                    </div>
-                    
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </article>
+        {/* Subscribe CTA */}
+        <section className="mx-auto max-w-6xl px-6 pb-24">
+          <div className="relative overflow-hidden rounded-2xl bg-foreground px-8 py-12 text-background sm:px-12 sm:py-16">
+            {/* Grid lines, fading outward */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                backgroundImage:
+                  'linear-gradient(color-mix(in oklab, var(--background) 7%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--background) 7%, transparent) 1px, transparent 1px)',
+                backgroundSize: '46px 46px',
+                maskImage: 'radial-gradient(ellipse 85% 120% at 90% 0%, black, transparent 72%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 85% 120% at 90% 0%, black, transparent 72%)',
+              }}
+            />
+            {/* Radial spotlight from the top-right */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse 55% 80% at 100% 0%, color-mix(in oklab, var(--background) 12%, transparent), transparent 60%)',
+              }}
+            />
+            {/* Soft glow for depth */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-24 left-1/4 h-48 w-48 rounded-full bg-background/[0.06] blur-3xl"
+            />
+            <div className="relative max-w-xl">
+              <h2 className="font-raleway text-2xl font-bold tracking-tight sm:text-3xl">
+                Ship email that reaches the inbox
+              </h2>
+              <p className="mt-3 max-w-lg text-background/70">
+                Get new guides on deliverability, security, and email infrastructure as we publish them, and
+                early access to the platform.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/waitlist"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-background px-6 text-sm font-semibold text-foreground transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  Join the waitlist
+                  <ArrowRight className="h-4 w-4" strokeWidth={2} />
                 </Link>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* All Posts with Search */}
-        <section className="py-12">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="mb-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <h2 className="text-3xl font-bold mb-2">
-                    {featuredPost ? 'All Articles' : 'Latest Articles'}
-                  </h2>
-                  <p className="text-muted-foreground text-lg">
-                    Explore our complete collection of insights and tutorials
-                  </p>
-                </div>
-                
-                {/* RSS Feed Link - Desktop */}
-                <div className="hidden sm:block">
-                  <Link 
-                    href="/blog/rss.xml" 
-                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors border border-border/50 hover:border-border rounded-lg px-4 py-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Rss className="w-4 h-4" />
-                    Subscribe to RSS
-                  </Link>
-                </div>
-              </div>
-
-              {/* All Posts with Search - Now self-contained */}
-              <BlogSearch 
-                posts={serializedPosts} 
-                featuredPostUrl={featuredPost?.url}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Empty State */}
-        {posts.length === 0 && (
-          <section className="py-24">
-            <div className="container mx-auto px-4 text-center">
-              <div className="max-w-md mx-auto">
-                <div className="w-24 h-24 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">
-                  <Calendar className="w-12 h-12 text-muted-foreground" />
-                </div>
-                <h2 className="text-2xl font-semibold mb-2">No posts yet</h2>
-                <p className="text-muted-foreground">
-                  We&apos;re working on bringing you amazing content. Check back soon!
-                </p>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Newsletter CTA */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-purple-600 p-8 sm:p-12 text-center">
-                <div className="relative z-10">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                    Stay Updated with Email Best Practices
-                  </h2>
-                  <p className="text-primary-foreground/80 mb-6 text-lg max-w-2xl mx-auto">
-                    Get the latest tutorials, security updates, and industry insights delivered to your inbox.
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Link 
-                      href="/#waitlist" 
-                      className="inline-flex items-center gap-2 bg-white text-primary hover:bg-white/90 px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105"
-                    >
-                      Join Our Newsletter
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <Link 
-                      href="/blog/rss.xml" 
-                      className="inline-flex items-center gap-2 border border-white/30 text-white hover:bg-white/10 px-6 py-3 rounded-lg font-medium transition-all duration-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Rss className="w-4 h-4" />
-                      RSS Feed
-                    </Link>
-                  </div>
-                </div>
-                
-                {/* Background Pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-xl" />
-                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-white/10 rounded-full blur-xl" />
+                <Link
+                  href="/blog/rss.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-background/25 px-6 text-sm font-medium text-background transition-colors duration-200 hover:bg-background/10"
+                >
+                  <Rss className="h-4 w-4" strokeWidth={2} />
+                  RSS feed
+                </Link>
               </div>
             </div>
           </div>
