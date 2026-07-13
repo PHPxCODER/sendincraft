@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, Mail, Globe, Building } from "lucide-react";
+import {
+  ExternalLink,
+  Mail,
+  Globe,
+  Building2,
+  Code2,
+  ShieldCheck,
+  Headphones,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About | SendinCraft - Developer-First Email Service",
@@ -20,153 +27,149 @@ export const metadata: Metadata = {
   },
 };
 
+const reasons = [
+  {
+    icon: Code2,
+    title: "Developer-first",
+    description: "A clean REST API and SDKs, with documentation written for people who ship.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Reliable infrastructure",
+    description: "Built on AWS SES with authenticated sending and automatic bounce and complaint handling.",
+  },
+  {
+    icon: Headphones,
+    title: "Backed by a team",
+    description: "Maintained by RDP Datacenter, with real experience running cloud and email infrastructure.",
+  },
+];
+
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      {/* Hero Section */}
-      <section className="relative py-16 sm:py-24">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-secondary/10" />
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              About
-              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent block">
-                SendinCraft
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-              A powerful SaaS solution for transactional email delivery, 
-              designed and developed with modern developers in mind.
+    <main className="bg-background">
+      {/* Header */}
+      <header className="relative overflow-hidden border-b border-border/60">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 [background-image:radial-gradient(var(--border)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_70%_90%_at_50%_-10%,black,transparent)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-56 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-foreground/[0.04] blur-3xl"
+        />
+
+        <div className="mx-auto max-w-6xl px-6 pb-14 pt-24 sm:pt-28">
+          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
+            <Link href="/" className="transition-colors hover:text-foreground">
+              Home
+            </Link>
+            <span aria-hidden className="text-muted-foreground/40">
+              /
+            </span>
+            <span className="text-foreground">About</span>
+          </nav>
+
+          <h1 className="max-w-3xl font-raleway text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            About SendinCraft
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            A transactional email platform for developers, built and operated by RDP Datacenter.
+          </p>
+        </div>
+      </header>
+
+      {/* Two info panels */}
+      <section className="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-foreground">
+              <Mail className="h-5 w-5" strokeWidth={2} />
+            </div>
+            <h2 className="font-raleway text-xl font-semibold tracking-tight text-foreground">
+              What is SendinCraft?
+            </h2>
+            <p className="mt-3 leading-relaxed text-muted-foreground">
+              SendinCraft is a platform for sending transactional and permission-based email through a
+              simple API and SMTP relay. It handles delivery, tracking, and list hygiene so you can focus
+              on your product.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Email is transmitted over AWS SES with domain authentication, delivery events, and automatic
+              suppression of addresses that bounce or complain.
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* Main Content */}
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              {/* About SendinCraft */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mail className="w-5 h-5 text-primary" />
-                    What is SendinCraft?
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    SendinCraft is a comprehensive Software as a Service (SaaS) platform 
-                    that provides reliable transactional email delivery services. We focus 
-                    on offering developers a seamless experience with powerful APIs, 
-                    excellent deliverability, and robust infrastructure.
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Built with modern web technologies and powered by AWS SES, 
-                    SendinCraft ensures your emails reach their destination with 
-                    99.9% uptime and lightning-fast delivery speeds.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* About RDP Datacenter */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building className="w-5 h-5 text-primary" />
-                    Developed by RDP Datacenter
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    SendinCraft is proudly developed and maintained by RDP Datacenter, 
-                    a technology company specializing in innovative software solutions 
-                    and infrastructure services.
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    With expertise in cloud technologies, API development, and scalable 
-                    systems, RDP Datacenter brings years of experience to ensure 
-                    SendinCraft meets the highest standards of reliability and performance.
-                  </p>
-                  <Button variant="outline" size="sm" asChild>
-                    <Link 
-                      href="https://rdpdatacenter.in" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2"
-                    >
-                      <Globe className="w-4 h-4" />
-                      Visit RDP Datacenter
-                      <ExternalLink className="w-3 h-3" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-muted text-foreground">
+              <Building2 className="h-5 w-5" strokeWidth={2} />
             </div>
-
-            {/* Contact Section */}
-            <Card className="bg-gradient-to-br from-primary/5 to-purple-600/5 border-primary/20">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl mb-2">Get in Touch</CardTitle>
-                <p className="text-muted-foreground">
-                  Have questions about SendinCraft or need support? We&apos;d love to hear from you.
-                </p>
-              </CardHeader>
-              <CardContent className="text-center">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
-                  <Button asChild className="gap-2">
-                    <Link href="mailto:hello@sendincraft.com">
-                      <Mail className="w-4 h-4" />
-                      Email SendinCraft
-                    </Link>
-                  </Button>
-                  <Button variant="outline" asChild className="gap-2">
-                    <Link 
-                      href="https://rdpdatacenter.in" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      <Globe className="w-4 h-4" />
-                      Contact RDP Datacenter
-                      <ExternalLink className="w-3 h-3" />
-                    </Link>
-                  </Button>
-                </div>
-                <p className="text-sm text-muted-foreground mt-6">
-                  For technical support, partnership inquiries, or general questions about our services.
-                </p>
-              </CardContent>
-            </Card>
+            <h2 className="font-raleway text-xl font-semibold tracking-tight text-foreground">
+              Developed by RDP Datacenter
+            </h2>
+            <p className="mt-3 leading-relaxed text-muted-foreground">
+              SendinCraft is developed and maintained by RDP Datacenter, a team working across cloud
+              infrastructure, APIs, and scalable systems.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              That background shapes how SendinCraft is built: predictable delivery, sensible defaults,
+              and controls that protect your sending reputation.
+            </p>
+            <Button variant="outline" size="sm" className="mt-6" asChild>
+              <Link
+                href="https://rdpdatacenter.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2"
+              >
+                <Globe className="h-4 w-4" />
+                Visit RDP Datacenter
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Additional Info */}
-      <section className="py-12 border-t border-border/50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-6">Why Choose SendinCraft?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <h3 className="font-semibold mb-2">Developer-First</h3>
-                <p className="text-sm text-muted-foreground">
-                  Built by developers, for developers. Simple APIs and excellent documentation.
-                </p>
+      {/* Why choose - divided columns, not floating cards */}
+      <section className="border-t border-border/60">
+        <div className="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+          <h2 className="font-raleway text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Why teams choose SendinCraft
+          </h2>
+          <div className="mt-10 grid grid-cols-1 divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
+            {reasons.map((reason) => (
+              <div key={reason.title} className="px-0 py-6 md:px-8 md:py-0 md:first:pl-0">
+                <reason.icon className="h-6 w-6 text-foreground" strokeWidth={1.75} />
+                <h3 className="mt-4 font-semibold text-foreground">{reason.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{reason.description}</p>
               </div>
-              <div className="text-center">
-                <h3 className="font-semibold mb-2">Reliable Infrastructure</h3>
-                <p className="text-sm text-muted-foreground">
-                  Powered by AWS SES with 99.9% uptime and global delivery network.
-                </p>
-              </div>
-              <div className="text-center">
-                <h3 className="font-semibold mb-2">Expert Support</h3>
-                <p className="text-sm text-muted-foreground">
-                  Backed by RDP Datacenter&apos;s expertise in cloud technologies and scalable systems.
-                </p>
-              </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <div className="rounded-2xl border border-border bg-muted/30 p-8 sm:p-10">
+          <h2 className="font-raleway text-2xl font-semibold tracking-tight text-foreground">Get in touch</h2>
+          <p className="mt-2 max-w-lg text-muted-foreground">
+            Questions about SendinCraft, support, or partnerships? We read every message.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <Button asChild className="gap-2">
+              <Link href="mailto:hello@sendincraft.com">
+                <Mail className="h-4 w-4" />
+                Email the team
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="gap-2">
+              <Link href="https://rdpdatacenter.in" target="_blank" rel="noopener noreferrer">
+                <Globe className="h-4 w-4" />
+                Contact RDP Datacenter
+                <ExternalLink className="h-3 w-3" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
