@@ -125,7 +125,7 @@ export function LegalPage({ slug, title, description, lastUpdated, sections }: L
                     <Hash className="h-4 w-4" strokeWidth={2} />
                   </a>
                 </div>
-                <div className="space-y-4 text-[15px] leading-7 text-muted-foreground [&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:decoration-foreground/30 [&_a]:underline-offset-4 [&_a]:transition-colors [&_strong]:font-semibold [&_strong]:text-foreground hover:[&_a]:decoration-foreground">
+                <div className="space-y-4 text-[15px] leading-7 text-muted-foreground [&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:decoration-foreground/30 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a:hover]:decoration-foreground [&_strong]:font-semibold [&_strong]:text-foreground">
                   {section.content}
                 </div>
               </section>
