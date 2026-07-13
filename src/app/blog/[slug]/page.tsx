@@ -252,7 +252,7 @@ const lastModified = await getGithubLastEdit({
             <div className="max-w-4xl mx-auto">
             <div className="bg-card border border-border/50 rounded-xl p-4 sm:p-8">
                 <div className="flex items-start gap-3 sm:gap-6">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-xl flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-foreground text-background rounded-full flex items-center justify-center font-bold text-sm sm:text-xl flex-shrink-0">
                     {author.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -320,16 +320,16 @@ const lastModified = await getGithubLastEdit({
         <section className="py-16 border-t border-border/50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-gradient-to-br from-primary/10 to-purple-600/10 border border-primary/20 rounded-2xl p-8">
+              <div className="bg-muted/40 border border-border rounded-2xl p-8">
                 <h2 className="text-2xl font-bold mb-4">
                   Enjoyed this article?
                 </h2>
                 <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                  Join our newsletter to get the latest email development insights, tutorials, and best practices delivered to your inbox.
+                  Get new email engineering guides as we publish them, and early access to the platform.
                 </p>
                 <Button asChild size="lg" className="gap-2">
-                  <Link href="/#waitlist">
-                    Subscribe to Newsletter
+                  <Link href="/waitlist">
+                    Join the waitlist
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
