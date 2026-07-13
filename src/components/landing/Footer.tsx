@@ -50,10 +50,10 @@ const Footer = () => {
       <div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8">
         <div className="space-y-4">
           <div className="flex items-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-foreground text-background">
               <Send className="h-4 w-4" />
             </div>
-            <span className="ml-2 text-xl font-bold text-white">
+            <span className="ml-2 text-xl font-bold text-foreground">
               SendinCraft
             </span>
           </div>
@@ -84,13 +84,13 @@ const Footer = () => {
         <div className="mt-10 grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
           {footerLinks.map((section) => (
             <div key={section.label} className="mb-10 md:mb-0">
-              <h3 className="text-xs text-white">{section.label}</h3>
+              <h3 className="text-xs font-medium text-foreground">{section.label}</h3>
               <ul className="text-muted-foreground mt-4 space-y-2 text-sm">
                 {section.links.map((link) => (
                   <li key={link.title}>
                     <a
                       href={link.href}
-                      className="inline-flex items-center text-gray-400 transition-all duration-300 hover:text-white"
+                      className="inline-flex items-center text-muted-foreground transition-colors duration-200 hover:text-foreground"
                       {...(link.external ? { 
                         target: '_blank', 
                         rel: 'noopener noreferrer' 
