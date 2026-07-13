@@ -16,7 +16,7 @@ export default function Comparision() {
                 Compare Features
               </div>
             </div>
-            <p className="text-sm text-white/70">Checkout what you get in each of our plans</p>
+            <p className="text-sm text-white/70">See what you get in each of our plans</p>
           </div>
           <div className="flex flex-col items-start justify-start self-stretch pb-6">
             <div className="inline-flex h-16 items-center justify-start gap-[5px] self-stretch px-8">
@@ -31,49 +31,49 @@ export default function Comparision() {
               <div className="flex flex-col items-start justify-center gap-1 self-stretch px-8 py-[15.5px]">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    Email Connections{' '}
+                    Transactional API & SMTP{' '}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-start justify-center gap-1 self-stretch px-8 py-[15.5px]">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    AI-powered Chat with Inbox{' '}
+                    Delivery events & webhooks{' '}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-start justify-center gap-1 self-stretch px-8 py-[15.5px]">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    Labeling{' '}
+                    Real-time analytics{' '}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-start justify-center gap-1 self-stretch px-8 py-[15.5px]">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    AI Email Writing{' '}
+                    Automatic suppression{' '}
                   </div>
                 </div>
               </div>
               <div className="flex h-14 flex-col items-start justify-center gap-1 self-stretch px-8">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    AI-generated Summaries{' '}
+                    Dedicated sending IP{' '}
                   </div>
                 </div>
               </div>
               <div className="flex h-14 flex-col items-start justify-center gap-1 self-stretch px-8">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    Customer Support{' '}
+                    Priority support{' '}
                   </div>
                 </div>
               </div>
               <div className="flex h-14 flex-col items-start justify-center gap-1 self-stretch px-8">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    Private Discord Community Access{' '}
+                    Custom rate limits{' '}
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@ export default function Comparision() {
               <div className="flex h-14 flex-col items-start justify-center gap-1 self-stretch px-8">
                 <div className="inline-flex h-6 items-center justify-start self-stretch">
                   <div className="justify-center text-sm leading-tight text-white/70">
-                    Best For{' '}
+                    Best for{' '}
                   </div>
                 </div>
               </div>
@@ -116,7 +116,7 @@ export default function Comparision() {
               >
                 <div className="flex items-center justify-center">
                   <div className="justify-start text-center text-base font-semibold leading-none text-white/80">
-                    Get Started For Free
+                    Join the waitlist
                   </div>
                 </div>
               </button>
@@ -131,7 +131,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    One email connection
+                    Included
                   </div>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    Available (basic features)
+                    Included
                   </div>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    Basic labeling
+                    Basic
                   </div>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    Limited writing capability
+                    Included
                   </div>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    Free
+                    ₹0
                   </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function Comparision() {
                     <ThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-white">
-                    Individuals, light use
+                    Testing & low volume
                   </div>
                 </div>
               </div>
@@ -219,16 +219,16 @@ export default function Comparision() {
                   </div>
                 </div>
                 <div className="justify-center text-2xl font-semibold leading-loose text-white">
-                  Zero Pro
+                  Pro
                 </div>
               </div>
               <button
-                
+
                 className="inline-flex h-[40px] items-center justify-center gap-2.5 self-stretch overflow-hidden rounded-lg bg-gradient-to-l from-white/0 to-white/10 p-[3.5px] outline outline-1 outline-offset-[-1px] outline-white/10"
               >
                 <div className="flex items-center justify-center">
                   <div className="justify-start text-center text-base font-semibold leading-none text-white/80">
-                    Start 7 day free trial
+                    Join the waitlist
                   </div>
                 </div>
               </button>
@@ -243,7 +243,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Unlimited connections
+                    Included
                   </div>
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Available (full, advanced features)
+                    Included
                   </div>
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Auto labeling
+                    Full history
                   </div>
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    One-click writing & replies
+                    Included
                   </div>
                 </div>
               </div>
@@ -283,7 +283,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Instant thread summaries
+                    Included
                   </div>
                 </div>
               </div>
@@ -293,7 +293,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Priority support
+                    Included
                   </div>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Access included
+                    Included
                   </div>
                 </div>
               </div>
@@ -313,7 +313,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    $20 per month
+                    ₹0.05 / email
                   </div>
                 </div>
               </div>
@@ -323,7 +323,7 @@ export default function Comparision() {
                     <PurpleThickCheck className="h-3 w-3" />
                   </div>
                   <div className="justify-center text-base font-normal leading-normal text-violet-400">
-                    Professionals, heavy email users
+                    Production apps at scale
                   </div>
                 </div>
               </div>
