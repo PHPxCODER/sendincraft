@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Code, BarChart3, Shield, Zap, Mail, GitBranch } from 'lucide-react';
+import { ArrowRight, Code, BarChart3, Shield, Zap, Mail, GitBranch } from 'lucide-react';
 import { AdditionalFeature } from '@/lib/types';
 
 const FeaturesSection = () => {
@@ -26,85 +27,86 @@ const FeaturesSection = () => {
     },
     {
       icon: Shield,
-      title: 'Enterprise Security',
+      title: 'Authenticated & Secure',
       description:
-        'DKIM/SPF authentication, TLS encryption, and SOC 2 compliance for maximum security.',
+        'DKIM, SPF, and DMARC authentication with TLS encryption in transit for every message you send.',
     },
     {
       icon: Mail,
       title: 'Smart Templates',
       description:
-        'Beautiful, responsive email templates with dynamic content and A/B testing capabilities.',
+        'Responsive email templates with dynamic content, so your transactional mail looks right everywhere.',
     },
     {
       icon: GitBranch,
       title: 'Easy Integration',
       description:
-        'Seamless integration with popular frameworks and platforms. Works with your existing stack.',
+        'Drop-in integration with popular frameworks and platforms. Works with your existing stack.',
     },
   ];
 
   return (
-    <section
-      id="features"
-      className="relative py-20 overflow-hidden"
-    >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-muted/5 via-background to-muted/10" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="mb-16 text-center">
+    <section id="features" className="relative overflow-hidden py-20">
+      <div className="container mx-auto px-4">
+        <div className="mb-14 max-w-2xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-foreground">
-              Everything You Need to Send Emails
+            <h2 className="font-raleway text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Everything you need to send email
             </h2>
-            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-              Powerful features designed for modern developers and growing
-              businesses.
+            <p className="mt-4 text-lg text-muted-foreground">
+              Powerful building blocks for developers and growing teams, without the operational overhead.
             </p>
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* One cohesive module with hairline separators, not floating cards */}
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              className="group rounded-2xl border border-border bg-card/50 backdrop-blur-sm p-6 transition-all duration-300 hover:bg-card/80 hover:shadow-lg hover:border-border/80"
+              className="group bg-card p-8 transition-colors duration-300 hover:bg-muted/30"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              whileHover={{ scale: 1.02, y: -5 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05, duration: 0.5 }}
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors duration-300">
-                <feature.icon className="h-6 w-6" />
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-muted text-foreground">
+                <feature.icon className="h-5 w-5" strokeWidth={1.75} />
               </div>
-              <h3 className="mb-2 text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+              <h3 className="font-raleway text-lg font-semibold tracking-tight text-foreground">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              <p className="mt-2 leading-relaxed text-muted-foreground">{feature.description}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Call to Action */}
         <motion.div
-          className="mt-16 text-center"
+          className="mt-12 flex flex-col gap-3 sm:flex-row"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex flex-col sm:flex-row gap-4">
-            <button className="h-12 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors duration-200 shadow-sm">
-              Start Building Today
-            </button>
-            <button className="h-12 rounded-lg border border-border bg-background/50 backdrop-blur-sm px-8 text-base font-medium text-foreground hover:bg-muted/50 transition-colors duration-200">
-              View Documentation
-            </button>
-          </div>
+          <Link
+            href="/waitlist"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground shadow-sm transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            Join the waitlist
+            <ArrowRight className="h-4 w-4" strokeWidth={2} />
+          </Link>
+          <Link
+            href="/docs"
+            className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-base font-medium text-foreground transition-colors duration-200 hover:bg-muted/50"
+          >
+            Read the docs
+          </Link>
         </motion.div>
       </div>
     </section>
